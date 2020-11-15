@@ -16,7 +16,7 @@ export default class Ball {
     this.element = document.createElement('div');
 
     // 速度设置
-    this.vx = 0;
+    this.vx = .6;
     this.vy = 0;
 
     this.Falling = true;
@@ -28,7 +28,7 @@ export default class Ball {
   // 为Ball对象添加class，并将其添加到父元素下
   start() {
     // 根绝参数设定初始位置
-    this.element.style.transform = `translate(${this.x}px, ${this.y}px)`
+    this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
 
     // 设定
     this.element.classList.add('ball');
@@ -43,6 +43,7 @@ export default class Ball {
   // 小球移动
   move(self) {
     let lastVy = self.vy;
+    let lastVx = self.vx;
     let currentTime = new Date().getTime();
     let interval = currentTime - self.lastTime;
     self.lastTime = currentTime;
@@ -53,21 +54,26 @@ export default class Ball {
       self.vy = lastVy + interval / 1000 * (config.G - config.F);
     } else {
       // 上升
-      self.vy = lastVy + interval / 1000 * (config.G + config.F);
+      self.vy = lastVy + interval / 1000 * (config.G +  config.F);
+    }
+
+    if (self.vx > 0) {
+      self.vx = lastVx + interval / 1000  *  -config.F / 2;
+    } else {
+      self.vx = lastVx + interval / 1000  *  config.F / 2;
     }
 
     self.y += (lastVy + self.vy) / 2 * interval;
+    self.x += self.vx * interval;
 
     self.element.style.transform = `translate(${self.x}px, ${self.y}px)`
 
     // 反弹判断
-    if (self.y >= 570 && self.vy > 0) {
-      if (self.vy < 0.01) {
-        self.vy = 0;
-        return;
-      }
-      self.vy = -self.vy;
-    }
+    this.collisionDetection(self)
+    // if(this.collisionDetection(self)) {
+    //   return;
+    // }
+    // console.log(self.vy);
     window.requestAnimationFrame(() => self.move(self));
   }
 
@@ -85,13 +91,31 @@ export default class Ball {
         break;
       case 'B':
         self.vy = -self.vy;
-        if (self.vy < 0.01) {
-          self.vy = 0;
-          return;
-        }
+        break;
+      case 'corner':
+        self.vy = -self.vy;
+        self.vx = -self.vx;
         break;
     }
   }
-  
 
+  hitTheWall(self) {
+    if (self.y <= 0) {
+      if ((self.x >= config.BOARD_WIDTH - self.diameter * config.GRID_WIDTH && self.vx > 0) ||
+      self.x <= 0) {
+        return 'corner';
+      }
+      return 'T';
+    } else if (self.y >= config.BOARD_HEIGHT - self.diameter * config.GRID_WIDTH && self.vy > 0) {
+      if ((self.x >= config.BOARD_WIDTH - self.diameter * config.GRID_WIDTH && self.vx > 0) ||
+        self.x <= 0) {
+        return 'corner';
+      }
+      return 'B';
+    } else if (self.x >= config.BOARD_WIDTH - self.diameter * config.GRID_WIDTH && self.vx > 0) {
+      return 'R';
+    } else if (self.x <= 0) {
+      return 'L';
+    }
+  }
 }
