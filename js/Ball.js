@@ -23,8 +23,6 @@ export default class Ball {
 
     this.startTime = 0;
     this.lastTime = 0;
-
-    this.times = 0;
   }
 
   // 为Ball对象添加class，并将其添加到父元素下
@@ -38,43 +36,62 @@ export default class Ball {
     
     this.startTime = new Date().getTime();
     this.lastTime = this.startTime;
-    let _this = this;
-    this.move(_this);
+    let self = this;
+    this.move(self);
   }
 
   // 小球移动
-  move(_this) {
-    let lastVy = _this.vy;
+  move(self) {
+    let lastVy = self.vy;
     let currentTime = new Date().getTime();
-    let interval = currentTime - _this.lastTime;
-    _this.lastTime = currentTime;
+    let interval = currentTime - self.lastTime;
+    self.lastTime = currentTime;
     
     // 改变速度
-    if (_this.vy >= 0) {
+    if (self.vy >= 0) {
       // 下落
-      _this.vy = lastVy + interval / 1000 * (config.G - config.F);
-      
+      self.vy = lastVy + interval / 1000 * (config.G - config.F);
     } else {
       // 上升
-      _this.vy = lastVy + interval / 1000 * (config.G + config.F);
+      self.vy = lastVy + interval / 1000 * (config.G + config.F);
     }
 
-    _this.y += (lastVy + _this.vy) / 2 * interval;
+    self.y += (lastVy + self.vy) / 2 * interval;
 
-    _this.element.style.transform = `translate(${_this.x}px, ${_this.y}px)`
+    self.element.style.transform = `translate(${self.x}px, ${self.y}px)`
 
-    if (_this.y >= 570 && _this.vy > 0) {
-      if (_this.vy < 0.01) {
-        _this.vy = 0;
+    // 反弹判断
+    if (self.y >= 570 && self.vy > 0) {
+      if (self.vy < 0.01) {
+        self.vy = 0;
         return;
       }
-      _this.vy = -_this.vy;
+      self.vy = -self.vy;
     }
-    window.requestAnimationFrame(() => _this.move(_this));
+    window.requestAnimationFrame(() => self.move(self));
   }
 
   // 碰撞检测
-
+  collisionDetection(self) {
+    switch (self.hitTheWall(self)) {
+      case 'T':
+        self.vy = -self.vy;
+        break;
+      case 'L':
+        self.vx = -self.vx;
+        break;
+      case 'R':
+        self.vx = -self.vx;
+        break;
+      case 'B':
+        self.vy = -self.vy;
+        if (self.vy < 0.01) {
+          self.vy = 0;
+          return;
+        }
+        break;
+    }
+  }
   
 
 }
