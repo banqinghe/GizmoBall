@@ -1,0 +1,37 @@
+.app {
+  display: flex;
+  width: 800px;
+  border: 1px #333 solid;
+}
+
+.game-board {
+  width: 600px;
+  height: 600px;
+  background: #58a;
+  background-image: linear-gradient(#eee 1px, transparent 0),
+    linear-gradient(90deg, #eee 1px, transparent 0);
+  background-size: 30px 30px;
+}
+
+.side-bar {
+  text-align: center;
+  width: 200px;
+}
+
+.title {
+  background: #bbb;
+  color: #fff;
+  margin: 0;
+}
+
+.components {
+  height: 300px;
+}
+
+.tools {
+  height: 150px;
+}
+
+.mode {
+  height: 150px;
+}
