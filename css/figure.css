@@ -5,3 +5,10 @@
   height: 30px;
   border-radius: 50%;
 }
+
+.baffle {
+  background: rgb(90, 201, 245);
+  position: absolute;
+  width: 120px;
+  height: 10px;
+}

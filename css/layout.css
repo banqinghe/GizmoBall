@@ -8,8 +8,8 @@
   width: 600px;
   height: 600px;
   background: #58a;
-  background-image: linear-gradient(#eee 1px, transparent 0),
-    linear-gradient(90deg, #eee 1px, transparent 0);
+  background-image: linear-gradient(#bbb 1px, transparent 0),
+    linear-gradient(90deg, #bbb 1px, transparent 0);
   background-size: 30px 30px;
   position: relative;
 }
