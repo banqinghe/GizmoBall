@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giamo Ball</title>
-  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/figure.css">
 </head>
 
 <body>
@@ -23,6 +24,14 @@
       </div>
     </div>
   </div>
+
+  <script type="module">
+    import Ball from './js/Ball.js';
+
+    const gameBoard = document.querySelector('.game-board');
+    const ball = new Ball(3, 2, gameBoard);
+    ball.start();
+  </script>
 </body>
 
 </html>
