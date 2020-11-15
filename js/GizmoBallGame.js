@@ -1,14 +1,26 @@
 import Ball from './Ball.js';
 import Baffle from './Baffle.js';
 import config from './config.js';
+import Util from './Util.js';
 
 export default class GizmoBallGame{
   constructor(){
-    const gameBoard = document.querySelector('.game-board');
-    const baffle = new Baffle(9, 16, gameBoard); 
-    const ball = new Ball(3, 2, gameBoard, baffle);
-
+    this.gameBoard = document.querySelector('.game-board');
+    this.baffle = new Baffle(9, 16, this.gameBoard); 
+    this.ball = new Ball(3, 2, this.gameBoard);
+    this.start();
+  }
+ 
+  start(){
+    this.creeping(this);
   }
   
-  
+  creeping(self){
+    //小球进行一次移动
+    self.ball.move();
+    //检测挡板和小球的碰撞
+    Util.hitItem(self.ball, self.baffle);
+
+    window.requestAnimationFrame(() => self.creeping(self));
+  }
 }

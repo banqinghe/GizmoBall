@@ -2,7 +2,7 @@ import config from './config.js'
 import Util from './Util.js';
 
 export default class Ball {
-  constructor(coordX, coordY, parentElement, baffle) {    
+  constructor(coordX, coordY, parentElement) {    
     // 坐标值
     this.x = coordX *  config.GRID_WIDTH;
     this.y = coordY * config.GRID_WIDTH;
@@ -25,7 +25,6 @@ export default class Ball {
     this.startTime = 0;
     this.lastTime = 0;
 
-    this.baffle = baffle;
     // 开始移动
     this.start();
   }
@@ -48,48 +47,45 @@ export default class Ball {
 
 
   // 小球移动
-  move(self) {
-    let lastVy = self.vy;
-    let lastVx = self.vx;
+  move() {
+    let lastVy = this.vy;
+    let lastVx = this.vx;
     let currentTime = new Date().getTime();
-    let interval = currentTime - self.lastTime;
-    self.lastTime = currentTime;
+    let interval = currentTime - this.lastTime;
+    this.lastTime = currentTime;
     
     // 改变速度
-    if (self.vy >= 0) {
+    if (this.vy >= 0) {
       // 下落
-      self.vy = lastVy + interval / 1000 * (config.G - config.F);
+      this.vy = lastVy + interval / 1000 * (config.G - config.F);
     } else {
       // 上升
-      self.vy = lastVy + interval / 1000 * (config.G +  config.F);
+      this.vy = lastVy + interval / 1000 * (config.G +  config.F);
     }
 
-    if (self.vx > 0) {
-      self.vx = lastVx + interval / 1000  *  -config.F / 4;
+    if (this.vx > 0) {
+      this.vx = lastVx + interval / 1000  *  -config.F / 4;
     } else {
-      self.vx = lastVx + interval / 1000  *  config.F / 4;
+      this.vx = lastVx + interval / 1000  *  config.F / 4;
     }
 
-    self.y += (lastVy + self.vy) / 2 * interval;
-    self.x += self.vx * interval;
+    this.y += (lastVy + this.vy) / 2 * interval;
+    this.x += this.vx * interval;
 
-    self.element.style.transform = `translate(${self.x}px, ${self.y}px)`
+    this.element.style.transform = `translate(${this.x}px, ${this.y}px)`
 
     // 反弹判断
-    this.collisionDetection(self);
+    this.collisionDetection(this);
     // if(this.collisionDetection(self)) {
     //   return;
     // }
     // console.log(self.vy);
-    window.requestAnimationFrame(() => self.move(self));
+    //window.requestAnimationFrame(() => self.move(self));
   }
 
   // 挡板碰撞检测
   // 边缘碰撞检测
   collisionDetection(self) {
-
-    Util.hitItem(this,this.baffle);
-
     switch (self.hitTheWall(self)) {
       case 'T':
         self.vy = Math.abs(self.vy);
