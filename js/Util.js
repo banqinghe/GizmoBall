@@ -22,12 +22,12 @@ export default class Util {
       //从上面撞到 从下面撞到
       if (ballBottomY >= rectangle.y && ballBottomY < baffleBottomY) {
         ball.vy = -Math.abs(ball.vy);
-      } else if (ball.y <= rectangle.y + 10 && ball.y > rectangle.y) {
+      } else if (ball.y <= baffleBottomY && ball.y > rectangle.y) {
         ball.vy = Math.abs(ball.vy);
       }
       // if ((ballBottomY >= rectangle.y && ballBottomY < rectangle.y + 10) || (ball.y <= rectangle.y + 10 && ball.y > rectangle.y))
       //   ball.vy = -ball.vy;
-    } else if (ballMiddleY <= rectangle.y && ballMiddleY >= baffleBottomY) {
+    } else if (ballMiddleY >= rectangle.y && ballMiddleY <= baffleBottomY) {
       if (ballRightX >= rectangle.x && ball.x < rectangle.x) {
         // 撞到左侧
         ball.vx = -Math.abs(ball.vx);

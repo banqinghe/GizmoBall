@@ -1,9 +1,6 @@
 import Line from './Line.js';
 
 export default class Collision {
-    constructor() {
-    }
-
     static hitBall(ball1, ball2){
 
     }
