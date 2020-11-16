@@ -4,7 +4,8 @@ import config from "./config.js";
 export default class Baffle extends Item {
   constructor(coorX, coorY, parentElement) {
     super(coorX, coorY, parentElement);
-    this.size = 4; 
+    this.size = 4;
+    this.height = 10;
     this.init();
   }
 
