@@ -21,8 +21,8 @@ export default class GizmoBallGame{
     //小球进行一次移动
     self.ball.move();
     //检测挡板和小球的碰撞
-    Util.hitItem(self.ball, self.baffle);
-    Util.hitItem(self.ball, self.square);
+    Util.hitRect(self.ball, self.baffle);
+    Util.hitRect(self.ball, self.square);
     window.requestAnimationFrame(() => self.creeping(self));
   }
 }
