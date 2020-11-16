@@ -12,6 +12,7 @@ export default class Baffle extends Item {
   init() {
     // 根绝参数设定初始位置
     this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
+    this.element.style.width = this.size * config.GRID_WIDTH;
     this.element.classList.add('baffle');
     this.parentElement.appendChild(this.element);
     document.addEventListener('keydown', (e) => this.moveBaffle(e, this));

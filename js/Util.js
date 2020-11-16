@@ -3,7 +3,7 @@ import Baffle from './Baffle.js';
 import config from './config.js';
 
 export default class Util {
-  static hitItem(ball, baffle) {
+  static hitRect(ball, rectangle) {
     //小球落到板上
     let ballR = ball.size * config.GRID_WIDTH / 2;
     let ballMiddleX = ball.x + ballR;
@@ -11,24 +11,24 @@ export default class Util {
     let ballRightX = ball.x + ballR * 2;
     let ballBottomY = ball.y + ballR * 2;
 
-    let baffleRightX = baffle.x + baffle.size * config.GRID_WIDTH;
-    let baffleBottomY = baffle.y + baffle.height;
-    // let baffleMiddleX = baffle.x + baffle.size * config.GRID_WIDTH / 2;
-    // let baffleMiddleY = baffle.y + baffle.height / 2;
-    // let baffleR = Math.sqrt(baffle.height ** 2 + (baffle.size * config.GRID_WIDTH / 2) ** 2);
+    let baffleRightX = rectangle.x + rectangle.size * config.GRID_WIDTH;
+    let baffleBottomY = rectangle.y + rectangle.height;
+    // let baffleMiddleX = rectangle.x + rectangle.size * config.GRID_WIDTH / 2;
+    // let baffleMiddleY = rectangle.y + rectangle.height / 2;
+    // let baffleR = Math.sqrt(rectangle.height ** 2 + (rectangle.size * config.GRID_WIDTH / 2) ** 2);
 
 
-    if (ballMiddleX >= baffle.x && ballMiddleX <= baffleRightX) {
+    if (ballMiddleX >= rectangle.x && ballMiddleX <= baffleRightX) {
       //从上面撞到 从下面撞到
-      if (ballBottomY >= baffle.y && ballBottomY < baffleBottomY) {
+      if (ballBottomY >= rectangle.y && ballBottomY < baffleBottomY) {
         ball.vy = -Math.abs(ball.vy);
-      } else if (ball.y <= baffle.y + 10 && ball.y > baffle.y) {
+      } else if (ball.y <= rectangle.y + 10 && ball.y > rectangle.y) {
         ball.vy = Math.abs(ball.vy);
       }
-      // if ((ballBottomY >= baffle.y && ballBottomY < baffle.y + 10) || (ball.y <= baffle.y + 10 && ball.y > baffle.y))
+      // if ((ballBottomY >= rectangle.y && ballBottomY < rectangle.y + 10) || (ball.y <= rectangle.y + 10 && ball.y > rectangle.y))
       //   ball.vy = -ball.vy;
-    } else if (ballMiddleY <= baffle.y && ballMiddleY >= baffleBottomY) {
-      if (ballRightX >= baffle.x && ball.x < baffle.x) {
+    } else if (ballMiddleY <= rectangle.y && ballMiddleY >= baffleBottomY) {
+      if (ballRightX >= rectangle.x && ball.x < rectangle.x) {
         // 撞到左侧
         ball.vx = -Math.abs(ball.vx);
       } else if (ball.x <= baffleRightX && ballRightX > baffleRightX) {
@@ -50,9 +50,9 @@ export default class Util {
       // }
       //以下判断四个角上发生的碰撞
     }else {
-      let dleft = (ballMiddleX - baffle.x) ** 2;
+      let dleft = (ballMiddleX - rectangle.x) ** 2;
       let dright = (ballMiddleX - baffleRightX) ** 2;
-      let dup = (ballMiddleY - baffle.y) ** 2;
+      let dup = (ballMiddleY - rectangle.y) ** 2;
       let ddown = (ballMiddleY - baffleBottomY) ** 2;
       let squareR = ballR ** 2;
 
