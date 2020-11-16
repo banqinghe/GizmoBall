@@ -12,3 +12,10 @@
   width: 120px;
   height: 10px;
 }
+
+.square {
+  background: aquamarine;
+  position: absolute;
+  width: 60px;
+  height: 60px;
+}
