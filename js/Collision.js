@@ -11,9 +11,9 @@ export default class Collision {
     // 传入一个
     static hitLine(ball, line, direction){
         if (direction == config.LEFT){
-            if () {
-
-            }
+            // if () {
+            //
+            // }
 
 
         } else if (direction == config.right){
