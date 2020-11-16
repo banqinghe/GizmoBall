@@ -4,6 +4,8 @@ const config = {
   F: 0.01,            // 阻力加速度
   BOARD_WIDTH: 600,   // 容器宽度
   BOARD_HEIGHT: 600,  // 容器高度
+  LEFT: 0,
+  RIGHT: 1
 }
 
 export default config;
