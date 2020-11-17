@@ -1,50 +1,28 @@
 import config from './config.js'
 import Util from './Util.js';
+import Item from "./Item.js";
 
-export default class Ball {
-  constructor(coordX, coordY, parentElement) {    
-    // 坐标值
-    this.x = coordX *  config.GRID_WIDTH;
-    this.y = coordY * config.GRID_WIDTH;
-
-    // 大小：直径所占的网格数
-    this.size = 1;
-
-    // 父元素：棋盘元素
-    this.parentElement = parentElement;
-
-    // DOM元素
-    this.element = document.createElement('div');
-
+export default class Ball extends Item{
+  constructor(coordX, coordY, size) {
+    super(coordX, coordY, size);
     // 速度设置
     this.vx = .6;
     this.vy = 0;
-
-    this.Falling = true;
-
     this.startTime = 0;
     this.lastTime = 0;
-
     // 开始移动
     this.start();
   }
 
   // 为Ball对象添加class，并将其添加到父元素下
   start() {
-    // 根绝参数设定初始位置
-    this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
-
     // 设定
     this.element.classList.add('ball');
-    this.parentElement.appendChild(this.element);
-    
     this.startTime = new Date().getTime();
     this.lastTime = this.startTime;
     let self = this;
     this.move(self);
   }
-
-
 
   // 小球移动
   move() {

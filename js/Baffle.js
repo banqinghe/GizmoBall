@@ -2,19 +2,13 @@ import Item from "./Item.js";
 import config from "./config.js";
 
 export default class Baffle extends Item {
-  constructor(coorX, coorY, parentElement) {
-    super(coorX, coorY, parentElement);
-    this.size = 4;
-    this.height = 10;
+  constructor(coorX, coorY, size) {
+    super(coorX, coorY, size, 10);
     this.init();
   }
 
   init() {
-    // 根绝参数设定初始位置
-    this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
-    this.element.style.width = this.size * config.GRID_WIDTH + 'px';
     this.element.classList.add('baffle');
-    this.parentElement.appendChild(this.element);
     document.addEventListener('keydown', (e) => this.moveBaffle(e, this));
   }
 
