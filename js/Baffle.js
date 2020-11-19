@@ -9,6 +9,7 @@ export default class Baffle extends Item {
 
   init() {
     this.element.classList.add('baffle');
+    this.element.classList.add('active');
     document.addEventListener('keydown', (e) => this.moveBaffle(e, this));
   }
 

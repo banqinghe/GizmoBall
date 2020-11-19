@@ -1,11 +1,13 @@
+/* 球 */
 .ball {
   background: radial-gradient(circle at 30px 30px,#fff,rgb(216, 230, 20));
-  position: absolute;
+  /* position: absolute; */
   width: 30px;
   height: 30px;
   border-radius: 50%;
 }
 
+/* 挡板 */
 .baffle {
   background: rgb(90, 201, 245);
   position: absolute;
@@ -13,9 +15,44 @@
   height: 10px;
 }
 
+/* 矩形 */
 .square {
   background: aquamarine;
-  position: absolute;
+  /* position: absolute; */
   width: 60px;
   height: 60px;
+}
+
+/* 黑洞 */
+.hole {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #000;
+  box-shadow: 0px 0px 0px 5px #aaa;
+}
+
+/* 三角 */
+.triangle {
+  border-left: none;
+  border-top: none;
+  border-bottom: 60px purple solid;
+  border-right: 60px transparent solid;
+}
+
+/* 圆形 */
+.circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: deeppink;
+}
+
+/* 直管道 */
+.pipe {
+  width: 25px;
+  height: 50px;
+  background: rgb(20, 223, 230);
+  border-left: 5px rgb(19, 70, 209) solid;
+  border-right: 5px rgb(19, 70, 209) solid;
 }
