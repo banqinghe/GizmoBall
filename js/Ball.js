@@ -1,6 +1,5 @@
 import config from './config.js'
 import Item from "./Item.js";
-import Line from "./collision/Line.js";
 import Circle from "./collision/Circle.js";
 
 export default class Ball extends Item{
@@ -11,7 +10,7 @@ export default class Ball extends Item{
     this.centerX = this.x + config.GRID_WIDTH * size / 2;
     this.centerY = this.y + config.GRID_WIDTH * size / 2;
 
-    this.vx = .4;
+    this.vx = 0;
     this.vy = 0;
     this.startTime = 0;
     this.lastTime = 0;
@@ -26,7 +25,6 @@ export default class Ball extends Item{
   init(){
     // 设定
     this.element.classList.add('ball');
-
     this.circleList.push(new Circle(this.x, this.y, this.size));
   }
 
@@ -64,11 +62,13 @@ export default class Ball extends Item{
     this.x += this.vx * interval;
 
     //console.log("The position is" + this.x + " " + this.y);
-    this.element.style.transform = `translate(${this.x}px, ${this.y}px)`
+    this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
 
     // 反弹判断
     this.collisionDetection(this);
 
+    this.circleList = [];
+    this.circleList.push(new Circle(this.x, this.y, this.size));
   }
 
   // 挡板碰撞检测

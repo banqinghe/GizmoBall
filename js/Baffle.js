@@ -16,10 +16,10 @@ export default class Baffle extends Item {
     this.lineList.push(new Line(this.x, this.y, this.height/config.GRID_WIDTH, Math.acos(0)));
     this.lineList.push(new Line(this.x, this.y + this.height, this.size, 0));
     this.lineList.push(new Line(this.x + this.width, this.y, this.height/config.GRID_WIDTH, Math.acos(0)));
-    // this.circleList.push(new Circle(this.x, this.y,0));
-    // this.circleList.push(new Circle(this.x + this.width, this.y,0));
-    // this.circleList.push(new Circle(this.x, this.y + this.height,0));
-    // this.circleList.push(new Circle(this.x + this.width, this.y + this.height,0));
+    this.circleList.push(new Circle(this.x, this.y,0));
+    this.circleList.push(new Circle(this.x + this.width, this.y,0));
+    this.circleList.push(new Circle(this.x, this.y + this.height,0));
+    this.circleList.push(new Circle(this.x + this.width, this.y + this.height,0));
 
     document.addEventListener('keydown', (e) => this.moveBaffle(e, this));
   }
@@ -47,9 +47,9 @@ export default class Baffle extends Item {
     this.lineList.push(new Line(this.x, this.y + this.height, this.size, 0));
     this.lineList.push(new Line(this.x + this.width, this.y, this.height/config.GRID_WIDTH, Math.acos(0)  ));
 
-    // this.circleList.push(new Circle(this.x, this.y,0));
-    // this.circleList.push(new Circle(this.x + this.width, this.y,0));
-    // this.circleList.push(new Circle(this.x, this.y + this.height,0));
-    // this.circleList.push(new Circle(this.x + this.width, this.y + this.height,0));
+    this.circleList.push(new Circle(this.x, this.y,0));
+    this.circleList.push(new Circle(this.x + this.width, this.y,0));
+    this.circleList.push(new Circle(this.x, this.y + this.height,0));
+    this.circleList.push(new Circle(this.x + this.width, this.y + this.height,0));
   }
 }

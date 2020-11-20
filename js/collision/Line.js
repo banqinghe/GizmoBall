@@ -5,7 +5,6 @@ export default class Line {
         this.x1 = x1;
         this.y1 = y1;
         this.angle = angle; // 取直线与x轴正方向的夹角
-        console.log(Math.cos(angle));
         let length = size * config.GRID_WIDTH;
 
         this.x2 = Math.cos(angle) * length + this.x1;
@@ -41,7 +40,14 @@ export default class Line {
         let tanA = Math.tan(this.angle);
 
         let v = Math.sqrt(ball.vx ** 2 + ball.vy ** 2);
-        let angleV = Math.atan(ball.vy / ball.vx);
+
+        let angleV;
+        if (ball.vy / ball.vx) {
+            angleV =  Math.atan(ball.vy / ball.vx);
+        } else {
+            angleV = Math.PI /2;
+        }
+
         // 画图可知 方向angleV的向量 撞在方向为angle的线段上后，出去的向量方向为 2 * angle - angleV
         let newAngelV = 2 * this.angle - angleV;
 
