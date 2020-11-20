@@ -12,51 +12,71 @@
 
 <body>
   <div class="app">
-    <div class="game-board"></div>
-    <div class="side-bar">
-      <div class="components">
-        <p class="title">组件栏</p>
-        <div class="components-container">
-          <div class="item">
-            <div class="ball"></div>
+    <div class="topbar">
+      <div class="topbar-buttons">
+        <button>文件</button>
+        <button>关于</button>
+      </div>
+      <p>OOAD Group 17 - Gizmo Ball</p>
+      
+    </div>
+    <div class="main">
+      <div class="game-board"></div>
+      <div class="side-bar">
+        <div class="components">
+          <p class="title">组件栏</p>
+          <div class="container">
+            <div class="grid">
+              <div class="ball item"></div>
+            </div>
+            <div class="grid">
+              <div class="square item"></div>
+            </div>
+            <div class="grid">
+              <div class="hole item"></div>
+            </div>
+            <div class="grid">
+              <div class="triangle item"></div>
+            </div>
+            <div class="grid">
+              <div class="circle item"></div>
+            </div>
+            <div class="grid">
+              <div class="pipe item"></div>
+            </div>
+            <div class="grid">
+              <div class="curve item"></div>
+            </div>
+            <div class="grid">
+              <div class="baffle item"></div>
+            </div>
           </div>
-          <div class="item">
-            <div class="square"></div>
+        </div>
+        <div class="tools">
+          <p class="title">工具栏</p>
+          <div class="container">
+            <img src="./images/smaller.svg" alt="变小" class="tool">
+            <img src="./images/bigger.svg" alt="变大" class="tool">
+            <img src="./images/rotate.svg" alt="旋转" class="tool">
           </div>
-          <div class="item">
-            <div class="hole"></div>
-          </div>
-          <div class="item">
-            <div class="triangle"></div>
-          </div>
-          <div class="item">
-            <div class="circle"></div>
-          </div>
-          <div class="item">
-            <div class="pipe"></div>
-          </div>
-          <div class="item">
-            <div class="curve"></div>
-          </div>
-          <div class="item">
-            <div class="square"></div>
+        </div>
+        <div class="mode">
+          <p class="title">模式栏</p>
+          <div class="mode-buttons">
+            <button class="design">设计模式</button>
+            <button class="play">游玩模式</button>
           </div>
         </div>
       </div>
-      <div class="tools">
-        <p class="title">工具栏</p>
-      </div>
-      <div class="mode">
-        <p class="title">模式栏</p>
-      </div>
     </div>
   </div>
+
 
   <script type="module">
 
     import GizmoBallGame from './js/GizmoBallGame.js';
     const gizmoBallGame = new GizmoBallGame();
-    
+
   </script>
 </body>
 

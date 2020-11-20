@@ -1,7 +1,45 @@
 .app {
+  border: 1px #aaa solid;
+  width: 800px;
+}
+
+.main {
   display: flex;
   width: 800px;
-  border: 1px #333 solid;
+  position: relative;
+}
+
+.topbar {
+  background: rgb(245, 245, 245);
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #aaa;
+}
+
+.topbar p {
+  box-sizing: border-box;
+  color: #888;
+  margin: 0;
+  width: 200px;
+  font-size: 14px;
+}
+
+.topbar-buttons {
+  display: flex;
+}
+
+.topbar button {
+  width: 100px;
+  border: none;
+  border-right: 1px #aaa solid;
+}
+
+.topbar button:focus {
+  outline: none;
+}
+
+.topbar button:hover {
+  background: #ddd;
 }
 
 .game-board {
@@ -24,21 +62,22 @@
   color: #fff;
   margin: 0;
   height: 24px;
+  user-select: none;
 }
 
 .components {
   height: 300px;
 }
 
-.components-container {
+.container {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-around;
-  overflow-y: scroll;
+  justify-content: flex-start;
+  overflow-y: auto;
   height: calc(100% - 24px);
 }
 
-.item {
+.grid {
   margin-top: 5px;
   box-sizing: border-box;
   width: 90px;
@@ -50,21 +89,46 @@
   overflow: hidden;
 }
 
-.item-curve {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: transparent;
-  box-shadow: 0 0 0 80px #333;
-  position: relative;
-  top: 45px;
-  right: 45px;
+.item:hover {
+  cursor: pointer;
 }
 
 .tools {
   height: 150px;
 }
 
+.tool {
+  width: 45px;
+  height: 45px;
+  margin-left: 30px;
+  margin-right: 20px;
+  margin-top: 10px;
+  object-fit: contain;
+}
+
+.tool:hover {
+  outline: 2px solid #ddd;
+  outline-offset: 5px;
+}
+
 .mode {
   height: 150px;
+}
+
+.mode-buttons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: calc(100% - 24px);
+}
+
+.mode-buttons button {
+  height: 50px;
+  background: #eee;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+}
+
+.mode-buttons button:hover {
+  background: #ddd;
 }

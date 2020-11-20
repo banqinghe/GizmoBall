@@ -10,7 +10,7 @@
 /* 挡板 */
 .baffle {
   background: rgb(90, 201, 245);
-  position: absolute;
+  /* position: absolute; */
   width: 120px;
   height: 10px;
 }
@@ -55,4 +55,26 @@
   background: rgb(20, 223, 230);
   border-left: 5px rgb(19, 70, 209) solid;
   border-right: 5px rgb(19, 70, 209) solid;
+}
+
+/* 弯管道 */
+.curve {
+  width: 40px;
+  height: 40px;
+  border: 5px rgb(19, 70, 209) solid;
+  background: rgb(20, 223, 230);
+  border-left: none;
+  border-top: none;
+  border-radius: 0 0 100% 0;
+}
+
+.curve::before {
+  content: "";
+  display: block;
+  width: 20%;
+  height: 20%;
+  border: 5px solid rgb(19, 70, 209);
+  border-left: none;
+  border-top: none;
+  border-radius: 0 0 100% 0;
 }

@@ -1,3 +1,7 @@
 .active {
   position: absolute;
 }
+
+.select {
+  outline: 2px dashed black;
+}
