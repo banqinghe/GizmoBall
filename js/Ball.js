@@ -18,6 +18,7 @@ export default class Ball extends Item{
   start() {
     // 设定
     this.element.classList.add('ball');
+    this.element.classList.add('active');
     this.startTime = new Date().getTime();
     this.lastTime = this.startTime;
     let self = this;

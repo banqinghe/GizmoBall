@@ -23,10 +23,42 @@
   background: #bbb;
   color: #fff;
   margin: 0;
+  height: 24px;
 }
 
 .components {
   height: 300px;
+}
+
+.components-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  overflow-y: scroll;
+  height: calc(100% - 24px);
+}
+
+.item {
+  margin-top: 5px;
+  box-sizing: border-box;
+  width: 90px;
+  height: 90px;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.item-curve {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 0 0 80px #333;
+  position: relative;
+  top: 45px;
+  right: 45px;
 }
 
 .tools {
