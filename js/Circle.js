@@ -13,8 +13,6 @@ export default class Circle extends Item{
     init() {
         // 设定
         this.element.classList.add('ball');
-        this.element.style.height = this.height + 'px';
-        this.element.style.width = this.width + 'px';
-
+        console.log(this.x + " " + this.y);
     }
 }
