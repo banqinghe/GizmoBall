@@ -2,6 +2,7 @@ import Baffle from "./Baffle.js";
 import Ball from "./Ball.js";
 import Square from "./Square.js";
 import Util from "./Util.js";
+import Circle from "./Circle.js";
 
 export default class GameBoard {
     constructor() {
@@ -12,7 +13,7 @@ export default class GameBoard {
         this.itemList = [];
         this.itemList.push(new Baffle(9, 16, 4));
         this.itemList.push(new Square(15, 10, 2));
-
+        new Circle(5, 6, 4);
         this.start();
     }
 

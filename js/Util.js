@@ -1,6 +1,8 @@
 import Ball from './Ball.js';
 import Baffle from './Baffle.js';
 import config from './config.js';
+import Line from "./collision/Line.js";
+import Circle from "./collision/Circle.js";
 
 export default class Util {
   static hitRect(ball, rectangle) {
@@ -14,10 +16,12 @@ export default class Util {
     let baffleRightX = rectangle.x + rectangle.size * config.GRID_WIDTH;
     let baffleBottomY = rectangle.y + rectangle.height;
 
+    new Line(rectangle.x, rectangle.y, rectangle.size, 0).hit(ball);
+    new Circle(150,180,4).hit(ball);
     if (ballMiddleX >= rectangle.x && ballMiddleX <= baffleRightX) {
       //从上面撞到 从下面撞到
       if (ballBottomY >= rectangle.y && ballBottomY < baffleBottomY) {
-        ball.vy = -Math.abs(ball.vy);
+        //ball.vy = -Math.abs(ball.vy);
       } else if (ball.y <= baffleBottomY && ball.y > rectangle.y) {
         ball.vy = Math.abs(ball.vy);
       }

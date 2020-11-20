@@ -50,6 +50,7 @@ export default class Ball extends Item{
     this.y += (lastVy + this.vy) / 2 * interval;
     this.x += this.vx * interval;
 
+    //console.log("The position is" + this.x + " " + this.y);
     this.element.style.transform = `translate(${this.x}px, ${this.y}px)`
 
     // 反弹判断
