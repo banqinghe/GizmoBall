@@ -6,9 +6,10 @@ export default class Line {
         this.y1 = y1;
         this.angle = angle; // 取直线与x轴正方向的夹角
 
-        let length = size * config.GRID_WIDTH;
+        this.length = size * config.GRID_WIDTH;
 
         this.x2 = Math.cos(angle) * length + this.x1;
+        this.y2 = Math.sin(angle) * length + this.y1;
     }
 
     checkCollision(ball){
@@ -26,9 +27,10 @@ export default class Line {
 
         let dis = Math.abs((tanA * (ballMiddleX - this.x1) + this.y1 - ballMiddleY) * cosA);
 
-
-        return (ballMiddleX >=  Math.min(limitL, limitR) && ballMiddleX <= Math.max(limitL, limitR)
-        && dis <= ballR)
+        //线段竖直时需要特判
+        return (dis <= ballR) &&
+            (Math.cos(this.angle) === 0 ?  (ballMiddleY >= this.y1 && ballMiddleY <=  this.y2) : (ballMiddleX >=  Math.min(limitL, limitR) && ballMiddleX <= Math.max(limitL, limitR)
+        ));
     }
 
     changeV(ball){
@@ -40,7 +42,7 @@ export default class Line {
 
         let v = Math.sqrt(ball.vx ** 2 + ball.vy ** 2);
         let angleV = Math.atan(ball.vy / ball.vx);
-        // 画图可知 方向angleV的向量撞在方向为angle的线段上后，出去的向量方向为 2 * angle - angleV
+        // 画图可知 方向angleV的向量 撞在方向为angle的线段上后，出去的向量方向为 2 * angle - angleV
         let newAngelV = 2 * this.angle - angleV;
 
         if(tanA !== 0){ // 若对于y, 线段的x唯一, 即线段不为水平的, 那么x偏大速度为正, x偏小速度为负

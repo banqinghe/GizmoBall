@@ -1,24 +1,36 @@
 import config from './config.js'
-import Util from './Util.js';
 import Item from "./Item.js";
+import Line from "./collision/Line.js";
+import Circle from "./collision/Circle.js";
 
 export default class Ball extends Item{
   constructor(coordX, coordY, size) {
     super(coordX, coordY, size);
     // 速度设置
-    this.vx = .6;
+    this.radius = config.GRID_WIDTH * size / 2;
+    this.centerX = this.x + config.GRID_WIDTH * size / 2;
+    this.centerY = this.y + config.GRID_WIDTH * size / 2;
+
+    this.vx = .4;
     this.vy = 0;
     this.startTime = 0;
     this.lastTime = 0;
+
+    this.init();
     // 开始移动
     this.start();
+
   }
 
-  // 为Ball对象添加class，并将其添加到父元素下
-  start() {
+  //初始化样式和碰撞队列
+  init(){
     // 设定
     this.element.classList.add('ball');
-    this.element.classList.add('active');
+
+    this.circleList.push(new Circle(this.x, this.y, this.size));
+  }
+
+  start() {
     this.startTime = new Date().getTime();
     this.lastTime = this.startTime;
     let self = this;
@@ -56,11 +68,7 @@ export default class Ball extends Item{
 
     // 反弹判断
     this.collisionDetection(this);
-    // if(this.collisionDetection(self)) {
-    //   return;
-    // }
-    // console.log(self.vy);
-    //window.requestAnimationFrame(() => self.move(self));
+
   }
 
   // 挡板碰撞检测
@@ -104,10 +112,5 @@ export default class Ball extends Item{
     } else if (self.x <= 0) {
       return 'L';
     }
-  }
-
-  hitItem(self) {
-    let itemList = document.querySelector('.game-board').children();
-  
   }
 }

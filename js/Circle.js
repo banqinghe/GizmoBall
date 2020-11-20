@@ -1,5 +1,6 @@
 import config from "./config.js";
 import Item from "./Item.js";
+import CollisionCircle from "./collision/Circle.js";
 
 export default class Circle extends Item{
     constructor(coordX, coordY, size) {
@@ -12,7 +13,8 @@ export default class Circle extends Item{
 
     init() {
         // 设定
-        this.element.classList.add('ball');
-        console.log(this.x + " " + this.y);
+        this.element.classList.add('circle');
+
+        this.circleList.push(new CollisionCircle(this.x, this.y,this.size));
     }
 }
