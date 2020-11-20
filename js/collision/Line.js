@@ -5,8 +5,8 @@ export default class Line {
         this.x1 = x1;
         this.y1 = y1;
         this.angle = angle; // 取直线与x轴正方向的夹角
-
-        this.length = size * config.GRID_WIDTH;
+        console.log(Math.cos(angle));
+        let length = size * config.GRID_WIDTH;
 
         this.x2 = Math.cos(angle) * length + this.x1;
         this.y2 = Math.sin(angle) * length + this.y1;
@@ -29,7 +29,7 @@ export default class Line {
 
         //线段竖直时需要特判
         return (dis <= ballR) &&
-            (Math.cos(this.angle) === 0 ?  (ballMiddleY >= this.y1 && ballMiddleY <=  this.y2) : (ballMiddleX >=  Math.min(limitL, limitR) && ballMiddleX <= Math.max(limitL, limitR)
+            (Math.cos(this.angle) < 0.001 ?  (ballMiddleY >= this.y1 && ballMiddleY <=  this.y2) : (ballMiddleX >=  Math.min(limitL, limitR) && ballMiddleX <= Math.max(limitL, limitR)
         ));
     }
 
