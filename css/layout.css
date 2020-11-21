@@ -22,6 +22,7 @@
   margin: 0;
   width: 200px;
   font-size: 14px;
+  user-select: none;
 }
 
 .topbar-buttons {
