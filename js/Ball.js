@@ -65,7 +65,7 @@ export default class Ball extends Item{
     this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
 
     // 反弹判断
-    this.collisionDetection(this);
+    //this.collisionDetection(this);
 
     this.circleList = [];
     this.circleList.push(new Circle(this.x, this.y, this.size));
@@ -73,7 +73,7 @@ export default class Ball extends Item{
 
   // 挡板碰撞检测
   // 边缘碰撞检测
-  collisionDetection(self) {
+  /*collisionDetection(self) {
     switch (self.hitTheWall(self)) {
       case 'T':
         self.vy = Math.abs(self.vy);
@@ -112,5 +112,5 @@ export default class Ball extends Item{
     } else if (self.x <= 0) {
       return 'L';
     }
-  }
+  }*/
 }
