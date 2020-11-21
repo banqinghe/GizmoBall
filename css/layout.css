@@ -1,6 +1,7 @@
 .app {
   border: 1px #aaa solid;
   width: 800px;
+  position: relative;
 }
 
 body {
@@ -138,4 +139,72 @@ body {
 
 .mode-buttons button:hover {
   background: #ddd;
+}
+
+/* about 页面遮罩 */
+.about-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 800px;
+  height: 625px;
+  background: rgba(0, 0, 0, .1);
+  justify-content: center;
+  align-items: center;
+}
+
+/* about 信息框 */
+.about-box {
+  padding: 0;
+  width: 350px;
+  height: 200px;
+  background: #fff;
+  border-radius: 8px;
+  z-index: 2;
+  overflow: hidden;
+  transform: scale(0.7);
+	opacity: 0;
+}
+
+/* about 信息框展示动画 */
+.show-box {
+  transform: scale(1);
+  opacity: 1;
+  transition: all .2s;
+}
+
+.about-box-top {
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+  height: 20px;
+  border-bottom: 1px rgba(0, 0, 0, .1) solid;
+}
+
+/* about 信息框关闭按钮 */
+.about-box-top span {
+  text-align: center;
+  width: 30px;
+  background: #eee;
+  user-select: none;
+}
+
+.about-box-top span:hover {
+  background: rgb(206, 205, 205);
+  color: #fff;
+  cursor: pointer;
+}
+
+.about-box h1 {
+  font-size: 20px;
+  font-weight: normal;
+  margin: 10px auto;
+  text-align: center;
+}
+
+.about-box-text p {
+  font-size: 12px;
+  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 3px 20px;
 }
