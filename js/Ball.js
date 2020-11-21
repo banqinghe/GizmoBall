@@ -12,12 +12,12 @@ export default class Ball extends Item{
 
     this.vx = 0;
     this.vy = 0;
-    this.startTime = 0;
+    // this.startTime = 0;
     this.lastTime = 0;
 
     this.init();
     // 开始移动
-    this.start();
+    // this.start();
 
   }
 
@@ -28,11 +28,9 @@ export default class Ball extends Item{
     this.circleList.push(new Circle(this.x, this.y, this.size));
   }
 
-  start() {
-    this.startTime = new Date().getTime();
-    this.lastTime = this.startTime;
-    let self = this;
-    this.move(self);
+  // 设定时间变量
+  timeStart() {
+    this.lastTime = new Date().getTime();
   }
 
   // 小球移动

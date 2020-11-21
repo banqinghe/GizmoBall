@@ -6,6 +6,8 @@ export default class GizmoBallGame{
 
     this.dragListener();
     this.topbarListener();
+    this.toolListener();
+    this.modeListener();
   }
 
   // 为组件栏添加拖动监听
@@ -42,6 +44,70 @@ export default class GizmoBallGame{
     closeAbout.addEventListener('click', e => {
       aboutBox.classList.remove('show-box');
       aboutPage.style.display = 'none'
+    });
+  }
+
+  // 工具栏监听
+  toolListener() {
+    // const smallerButton = document.querySelector('#smaller');
+    // const biggerButton = document.querySelector('#bigger');
+    // const rotateButton = document.querySelector('#rotate');
+    // const deleteButton = document.querySelector('#delete');
+
+    const tools = document.querySelector('.tools .container');
+    tools.addEventListener('click', e => {
+      switch (e.target.id) {
+        case 'smaller':
+          console.log(this.gameBoard.focusElement);
+          console.log('smaller');
+          break;
+        case 'bigger':
+          console.log('bigger');
+          break;
+        case 'rotate':
+          console.log('rotate');
+          break;
+        case 'delete':
+          this.deleteItem(this.gameBoard.focusElement);
+          break;
+      }
+    })    
+  }
+
+  // 删除元素
+  deleteItem(targetElement) {
+    if (!targetElement) {
+      return;
+    }
+
+    // 遍历 item，寻找并删除目标元素
+    if (targetElement.classList.contains('ball')) {
+      this.deleteListItem(this.gameBoard.ballList, targetElement);
+    } else {
+      this.deleteListItem(this.gameBoard.itemList, targetElement);
+    }
+
+    // 清除 focus 元素
+    this.gameBoard.focusElement = null;
+  }
+
+  // 工具函数，用于删除 list 中的指定项
+  deleteListItem(list, targetElement) {
+    for (let i = 0, len = list.length; i < len; i++) {
+      if (list[i].element === targetElement) {
+        list[i].deleteElement();
+        list.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  modeListener() {
+    const designButton = document.querySelector('#design');
+    const playButton = document.querySelector('#play');
+
+    playButton.addEventListener('click', e => {
+      this.gameBoard.start();
     });
   }
 }

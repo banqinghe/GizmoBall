@@ -46,4 +46,9 @@ export default class Item {
   setHeight(){
     
   }
+
+  // 删除 DOM 元素
+  deleteElement() {
+    this.element.remove();
+  }
 }

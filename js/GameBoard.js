@@ -7,26 +7,30 @@ import Border from "./Border.js";
 
 export default class GameBoard {
     constructor() {
+        // 除小球外需检测碰撞的 item 列表
+        this.itemList = [];
+        // 将边框类放在最下方，不遮挡其他 active 元素
+        this.addItem(new Border());
+
         //小球列表
         this.ballList = [];
         for(let i = 0; i < 1; i++){
             this.addBall(new Ball(1, 5, 1));
         }
-        //其他需要检测碰撞的 item 列表
-        this.itemList = [];
 
-        this.addItem(new Border());
+        this.focusElement = null;
+
         this.addItem(new Baffle(9, 16, 4));
-        this.addItem(new Square(15, 10, 2));
         this.addItem(new Square(15, 10, 2));
         this.addItem(new Triangle(5, 15, 5));
 
-        this.addListener();
+        this.dropListener();
+        this.focusListener();
 
-        this.start();
+        // this.start();
     }
 
-    addListener() {
+    dropListener() {
         // 修改默认行为，使game board成为可放置目标
         config.GAME_BOARD.addEventListener('dragover', e => {
             e.preventDefault();
@@ -52,6 +56,22 @@ export default class GameBoard {
         })
     }
 
+    focusListener() {
+        config.GAME_BOARD.addEventListener('click', e => {
+            // 清除上一个 focus 元素的 outline 样式
+            if (this.focusElement) {
+                this.focusElement.classList.remove('focus');
+            }
+            // 选定新的 focus 元素
+            if (!e.target.classList.contains('border')) {
+                this.focusElement = e.target;
+                this.focusElement.classList.add('focus');
+            } else {
+                this.focusElement = null;
+            }
+        });
+    }
+
     addBall(ball) {
         this.ballList.push(ball);
     }
@@ -61,6 +81,7 @@ export default class GameBoard {
     }
 
     start(){
+        this.ballList.forEach(ball => ball.timeStart());
         this.creeping(this);
     }
 

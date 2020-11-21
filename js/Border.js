@@ -10,6 +10,7 @@ export default class Border extends Item{
     }
 
     init(){
+        this.element.classList.add('border');
 
         this.lineList.push(new Line(this.x, this.y, this.size, 0));
         this.lineList.push(new Line(this.x, this.y, this.size, Math.acos(0)));
