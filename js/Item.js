@@ -33,10 +33,10 @@ export default class Item {
   collision(ball){
     this.lineList.forEach(function (line) {
       line.hit(ball);
-    })
+    });
     this.circleList.forEach(function (circle) {
       circle.hit(ball);
-    })
+    });
   }
 
   setSize(size){
@@ -45,5 +45,10 @@ export default class Item {
 
   setHeight(){
     
+  }
+
+  // 删除 DOM 元素
+  deleteElement() {
+    this.element.remove();
   }
 }

@@ -14,11 +14,11 @@
   <div class="app">
     <div class="topbar">
       <div class="topbar-buttons">
-        <button>文件</button>
-        <button>关于</button>
+        <button id="file-button">文件</button>
+        <button id="about-button">关于</button>
       </div>
       <p>OOAD Group 17 - Gizmo Ball</p>
-      
+
     </div>
     <div class="main">
       <div class="game-board"></div>
@@ -27,48 +27,67 @@
           <p class="title">组件栏</p>
           <div class="container">
             <div class="grid">
-              <div class="ball item"></div>
+              <div class="ball item" draggable="true"></div>
             </div>
             <div class="grid">
-              <div class="square item"></div>
+              <div class="square item" draggable="true"></div>
             </div>
             <div class="grid">
-              <div class="hole item"></div>
+              <div class="hole item" draggable="true"></div>
             </div>
             <div class="grid">
-              <div class="triangle item"></div>
+              <div class="triangle item" draggable="true"></div>
             </div>
             <div class="grid">
-              <div class="circle item"></div>
+              <div class="circle item" draggable="true"></div>
             </div>
             <div class="grid">
-              <div class="pipe item"></div>
+              <div class="pipe item" draggable="true"></div>
             </div>
             <div class="grid">
-              <div class="curve item"></div>
+              <div class="curve item" draggable="true"></div>
             </div>
             <div class="grid">
-              <div class="baffle item"></div>
+              <div class="baffle item" draggable="true"></div>
             </div>
           </div>
         </div>
         <div class="tools">
           <p class="title">工具栏</p>
           <div class="container">
-            <img src="./images/smaller.svg" alt="变小" class="tool">
-            <img src="./images/bigger.svg" alt="变大" class="tool">
-            <img src="./images/rotate.svg" alt="旋转" class="tool">
+            <img src="./images/smaller.svg" id="smaller" draggable="false" alt="变小" class="tool">
+            <img src="./images/bigger.svg" id="bigger" draggable="false" alt="变大" class="tool">
+            <img src="./images/rotate.svg" id="rotate" draggable="false" alt="旋转" class="tool">
+            <img src="./images/delete.svg" id="delete" draggable="false" alt="删除" class="tool">
           </div>
         </div>
         <div class="mode">
           <p class="title">模式栏</p>
           <div class="mode-buttons">
-            <button class="design">设计模式</button>
-            <button class="play">游玩模式</button>
+            <button id="design">设计模式</button>
+            <button id="play">游玩模式</button>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="about-page" style="display: none;">
+      <div class="about-box">
+        <div class="about-box-top"><span>×</span></div>
+        <div class="about-box-text">
+          <h1>Giamo Ball</h1>
+          <p>一个使用原生 DOM 构建的弹球游戏</p>
+          <p>华东师范大学 面向对象设计与分析（2020-2021） 实验三</p>
+          <p>第17小组：
+            <a href="https://github.com/banqinghe" target="_blank">班庆贺</a>，
+            <a href="https://github.com/KamePan" target="_blank">潘恺铭</a>，
+            <a href="https://github.com/Chen-King" target="_blank">林辰育</a>
+          </p>
+          <p>项目仓库：<a href="https://github.com/banqinghe/GizmoBall" target="_blank">https://github.com/banqinghe/GizmoBall</a></p>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 

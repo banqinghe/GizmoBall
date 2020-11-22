@@ -1,6 +1,5 @@
 import config from './config.js'
 import Item from "./Item.js";
-import Line from "./collision/Line.js";
 import Circle from "./collision/Circle.js";
 
 export default class Ball extends Item{
@@ -11,14 +10,14 @@ export default class Ball extends Item{
     this.centerX = this.x + config.GRID_WIDTH * size / 2;
     this.centerY = this.y + config.GRID_WIDTH * size / 2;
 
-    this.vx = .4;
+    this.vx = 0;
     this.vy = 0;
-    this.startTime = 0;
+    // this.startTime = 0;
     this.lastTime = 0;
 
     this.init();
     // 开始移动
-    this.start();
+    // this.start();
 
   }
 
@@ -26,15 +25,12 @@ export default class Ball extends Item{
   init(){
     // 设定
     this.element.classList.add('ball');
-
     this.circleList.push(new Circle(this.x, this.y, this.size));
   }
 
-  start() {
-    this.startTime = new Date().getTime();
-    this.lastTime = this.startTime;
-    let self = this;
-    this.move(self);
+  // 设定时间变量
+  timeStart() {
+    this.lastTime = new Date().getTime();
   }
 
   // 小球移动
@@ -64,16 +60,18 @@ export default class Ball extends Item{
     this.x += this.vx * interval;
 
     //console.log("The position is" + this.x + " " + this.y);
-    this.element.style.transform = `translate(${this.x}px, ${this.y}px)`
+    this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
 
     // 反弹判断
-    this.collisionDetection(this);
+    //this.collisionDetection(this);
 
+    this.circleList = [];
+    this.circleList.push(new Circle(this.x, this.y, this.size));
   }
 
   // 挡板碰撞检测
   // 边缘碰撞检测
-  collisionDetection(self) {
+  /*collisionDetection(self) {
     switch (self.hitTheWall(self)) {
       case 'T':
         self.vy = Math.abs(self.vy);
@@ -112,5 +110,5 @@ export default class Ball extends Item{
     } else if (self.x <= 0) {
       return 'L';
     }
-  }
+  }*/
 }

@@ -2,6 +2,7 @@
   position: absolute;
 }
 
-.select {
-  outline: 2px dashed black;
+.focus {
+  outline: 2px dashed #111;
+  outline-offset: 2px;
 }
