@@ -14,16 +14,22 @@ export default class GameBoard {
 
         //小球列表
         this.ballList = [];
-        for(let i = 0; i < 1; i++){
-            this.addBall(new Ball(1, 5, 1));
+        this.addBall(new Ball(5, 5, 1));
+        for(let i = 0; i < 5; i++) {
+            this.addBall(new Ball(i, 0, 1));
         }
+        // for(let i = 0; i < 19; i++){
+        //     this.addBall(new Ball(i, 0, 1));
+        //     this.addBall(new Ball(19, i, 1));
+        //     this.addBall(new Ball(i+1, 19, 1));
+        //     this.addBall(new Ball(0, i+1, 1));
+        // }
 
         this.focusElement = null;
 
         this.addItem(new Baffle(9, 16, 4));
         this.addItem(new Square(15, 10, 2));
         this.addItem(new Triangle(5, 15, 5));
-
         this.dropListener();
         this.focusListener();
 
@@ -88,7 +94,7 @@ export default class GameBoard {
     creeping(self){
 
         self.ballList.forEach(function (ball) {
-
+            ball.move();
             //检测 item 和小球的碰撞
             self.itemList.forEach(function (item) {
                 item.collision(ball);
@@ -99,7 +105,7 @@ export default class GameBoard {
                 item.collision(ball);
             });
             //小球进行一次移动
-            ball.move();
+
         });
         window.requestAnimationFrame(() => self.creeping(self));
     }

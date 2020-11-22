@@ -10,7 +10,7 @@ export default class Ball extends Item{
     this.centerX = this.x + config.GRID_WIDTH * size / 2;
     this.centerY = this.y + config.GRID_WIDTH * size / 2;
 
-    this.vx = 0;
+    this.vx = .4;
     this.vy = 0;
     // this.startTime = 0;
     this.lastTime = 0;
@@ -59,7 +59,7 @@ export default class Ball extends Item{
     this.y += (lastVy + this.vy) / 2 * interval;
     this.x += this.vx * interval;
 
-    //console.log("The position is" + this.x + " " + this.y);
+    console.log("The position is" + this.x + " " + this.y);
     this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
 
     // 反弹判断

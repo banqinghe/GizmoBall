@@ -28,7 +28,7 @@ export default class Line {
 
         //线段竖直时需要特判
         return (dis <= ballR) &&
-            (Math.cos(this.angle) < 0.001 ?  (ballMiddleY >= this.y1 && ballMiddleY <=  this.y2) : (ballMiddleX >=  Math.min(limitL, limitR) && ballMiddleX <= Math.max(limitL, limitR)
+            (Math.cos(this.angle) < 0.01 ?  (ballMiddleY >= this.y1 && ballMiddleY <=  this.y2) : (ballMiddleX >=  Math.min(limitL, limitR) && ballMiddleX <= Math.max(limitL, limitR)
         ));
     }
 
@@ -40,21 +40,16 @@ export default class Line {
         let tanA = Math.tan(this.angle);
 
         let v = Math.sqrt(ball.vx ** 2 + ball.vy ** 2);
-
-        let angleV;
-        if (ball.vy / ball.vx) {
-            angleV =  Math.atan(ball.vy / ball.vx);
-        } else {
-            angleV = Math.PI /2;
-        }
+        console.log(v);
+        let angleV = ball.vy / ball.vx ? Math.atan(ball.vy / ball.vx) : Math.acos(0);
 
         // 画图可知 方向angleV的向量 撞在方向为angle的线段上后，出去的向量方向为 2 * angle - angleV
         let newAngelV = 2 * this.angle - angleV;
 
-        if(tanA !== 0){ // 若对于y, 线段的x唯一, 即线段不为水平的, 那么x偏大速度为正, x偏小速度为负
+        if(Math.abs(tanA) > 0.01){ // 若对于y, 线段的x唯一, 即线段不为水平的, 那么x偏大速度为正, x偏小速度为负
             ball.vx = v * Math.abs(Math.cos(newAngelV)) * (ballMiddleX > ((ballMiddleY - this.y1) / tanA + this.x1) ? 1:-1);
         } //若是线段水平，则vx不变
-        if(Math.cos(this.angle) !== 0){ //竖直/非竖直线段也同理
+        if(Math.abs(Math.cos(this.angle)) > 0.01){ //竖直/非竖直线段也同理
             ball.vy = v * Math.abs(Math.sin(newAngelV)) * (ballMiddleY > ((ballMiddleX - this.x1) * tanA + this.y1) ? 1:-1);
         }
     }
