@@ -14,7 +14,24 @@ export default class Circle extends Item{
     init() {
         // 设定
         this.element.classList.add('circle');
+        this.setLineAndCircleList(this.size);
+    }
 
-        this.circleList.push(new CollisionCircle(this.x, this.y,this.size));
+    bigger() {
+        super.bigger();
+        this.setLineAndCircleList(this.size);
+    }
+
+    smaller() {
+        if (this.size === 1) {
+            return;
+        }
+        super.smaller();
+        this.setLineAndCircleList(this.size);
+    }
+
+    setLineAndCircleList(size) {
+        this.circleList = [];
+        this.circleList.push(new Circle(this.x, this.y, size));
     }
 }

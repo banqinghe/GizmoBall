@@ -63,14 +63,6 @@ export default class Item {
     });
   }
 
-  setSize(size){
-
-  }
-
-  setHeight(){
-    
-  }
-
   // 删除 DOM 元素
   deleteElement() {
     this.element.remove();

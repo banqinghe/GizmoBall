@@ -12,14 +12,7 @@ export default class Baffle extends Item {
   init() {
     this.element.classList.add('baffle');
 
-    this.lineList.push(new Line(this.x, this.y, this.size, 0));
-    this.lineList.push(new Line(this.x, this.y, this.height/config.GRID_WIDTH, Math.acos(0)));
-    this.lineList.push(new Line(this.x, this.y + this.height, this.size, 0));
-    this.lineList.push(new Line(this.x + this.width, this.y, this.height/config.GRID_WIDTH, Math.acos(0)));
-    this.circleList.push(new Circle(this.x, this.y,0));
-    this.circleList.push(new Circle(this.x + this.width, this.y,0));
-    this.circleList.push(new Circle(this.x, this.y + this.height,0));
-    this.circleList.push(new Circle(this.x + this.width, this.y + this.height,0));
+    this.setLineAndCircleList(this.size);
 
     document.addEventListener('keydown', (e) => this.moveBaffle(e, this));
   }
@@ -40,17 +33,8 @@ export default class Baffle extends Item {
         break;
     }
     //由于 x 和 y 发生改变，清空 lineList 和 circleList 重新添加
-    this.lineList = [];
-    this.circleList = [];
-    this.lineList.push(new Line(this.x, this.y, this.size, 0));
-    this.lineList.push(new Line(this.x, this.y, this.height/config.GRID_WIDTH, Math.acos(0)));
-    this.lineList.push(new Line(this.x, this.y + this.height, this.size, 0));
-    this.lineList.push(new Line(this.x + this.width, this.y, this.height/config.GRID_WIDTH, Math.acos(0)  ));
+    this.setLineAndCircleList(this.size);
 
-    this.circleList.push(new Circle(this.x, this.y,0));
-    this.circleList.push(new Circle(this.x + this.width, this.y,0));
-    this.circleList.push(new Circle(this.x, this.y + this.height,0));
-    this.circleList.push(new Circle(this.x + this.width, this.y + this.height,0));
   }
 
   //重写 baffle 中的 bigger 方法
@@ -58,6 +42,7 @@ export default class Baffle extends Item {
     super.bigger();
     this.height = config.BAFFLE_HEIGHT;
     this.element.style.height = config.BAFFLE_HEIGHT + 'px';
+    this.setLineAndCircleList(this.size);
   }
 
   //重写 baffle 中的 smaller 方法
@@ -68,5 +53,21 @@ export default class Baffle extends Item {
     super.smaller();
     this.height = config.BAFFLE_HEIGHT;
     this.element.style.height = config.BAFFLE_HEIGHT + 'px';
+    this.setLineAndCircleList(this.size);
+  }
+
+  setLineAndCircleList(size) {
+    this.lineList = [];
+    this.circleList = [];
+
+    this.lineList.push(new Line(this.x, this.y, size, 0));
+    this.lineList.push(new Line(this.x, this.y, this.height/config.GRID_WIDTH, Math.acos(0)));
+    this.lineList.push(new Line(this.x, this.y + this.height, size, 0));
+    this.lineList.push(new Line(this.x + this.width, this.y, this.height/config.GRID_WIDTH, Math.acos(0)));
+
+    this.circleList.push(new Circle(this.x, this.y,0));
+    this.circleList.push(new Circle(this.x + this.width, this.y,0));
+    this.circleList.push(new Circle(this.x, this.y + this.height,0));
+    this.circleList.push(new Circle(this.x + this.width, this.y + this.height,0));
   }
 }

@@ -26,6 +26,25 @@ export default class Ball extends Item{
     // 设定
     this.element.classList.add('ball');
     this.circleList.push(new Circle(this.x, this.y, this.size));
+    this.setLineAndCircleList(this.size);
+  }
+
+  bigger() {
+    super.bigger();
+    this.setLineAndCircleList(this.size);
+  }
+
+  smaller() {
+    if (this.size === 1) {
+      return;
+    }
+    super.smaller();
+    this.setLineAndCircleList(this.size);
+  }
+
+  setLineAndCircleList(size) {
+    this.circleList = [];
+    this.circleList.push(new Circle(this.x, this.y, size));
   }
 
   // 设定时间变量
