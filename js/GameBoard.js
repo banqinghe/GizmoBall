@@ -4,6 +4,10 @@ import Square from "./Square.js";
 import Triangle from "./Triangle.js";
 import config from "./config.js";
 import Border from "./Border.js";
+import Circle from "./Circle.js";
+import Hole from "./Hole.js";
+import BentPile from "./BentPipe.js";
+import StraightPipe from "./StraightPipe.js";
 
 export default class GameBoard {
     constructor() {
@@ -30,6 +34,7 @@ export default class GameBoard {
         this.addItem(new Baffle(9, 16, 4));
         this.addItem(new Square(15, 10, 2));
         this.addItem(new Triangle(5, 15, 5));
+        this.addItem(new Circle(10, 8, 3));
         this.dropListener();
         this.focusListener();
 
@@ -53,6 +58,27 @@ export default class GameBoard {
             switch (e.dataTransfer.getData('text')) {
                 case 'ball':
                     this.addBall(new Ball(x,  y,  config.defaultSize.BALL));
+                    break;
+                case 'square':
+                    this.addItem(new Square(x,  y,  config.defaultSize.SQUARE));
+                    break;
+                case 'triangle':
+                    this.addItem(new Triangle(x,  y,  config.defaultSize.TRIANGLE));
+                    break;
+                case 'circle':
+                    this.addItem(new Circle(x,  y,  config.defaultSize.CIRCLE));
+                    break;
+                case 'baffle':
+                    this.addItem(new Baffle(x,  y,  config.defaultSize.BAFFLE, config.BAFFLE_HEIGHT));
+                    break;
+                case 'hole':
+                    this.addItem(new Hole(x,  y,  config.defaultSize.HOLE));
+                    break;
+                case 'curve':
+                    this.addItem(new BentPile(x,  y,  config.defaultSize.CURVE));
+                    break;
+                case 'pipe':
+                    this.addItem(new StraightPipe(x,  y,  config.defaultSize.PIPE));
                     break;
 
             }

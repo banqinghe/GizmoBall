@@ -1,6 +1,5 @@
 import Item from "./Item.js";
 import Line from "./collision/Line.js";
-import Circle from "./collision/Circle.js";
 
 
 export default class Border extends Item{

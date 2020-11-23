@@ -32,6 +32,6 @@ export default class Circle extends Item{
 
     setLineAndCircleList(size) {
         this.circleList = [];
-        this.circleList.push(new Circle(this.x, this.y, size));
+        this.circleList.push(new CollisionCircle(this.x, this.y, size));
     }
 }
