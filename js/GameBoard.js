@@ -102,7 +102,7 @@ export default class GameBoard {
             //检测与其他小球的碰撞
             self.ballList.forEach(function (item) {
                 if (item !== ball)
-                item.collision(ball);
+                    item.collision(ball);
             });
             //小球进行一次移动
 

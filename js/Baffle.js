@@ -52,4 +52,21 @@ export default class Baffle extends Item {
     this.circleList.push(new Circle(this.x, this.y + this.height,0));
     this.circleList.push(new Circle(this.x + this.width, this.y + this.height,0));
   }
+
+  //重写 baffle 中的 bigger 方法
+  bigger() {
+    super.bigger();
+    this.height = config.BAFFLE_HEIGHT;
+    this.element.style.height = config.BAFFLE_HEIGHT + 'px';
+  }
+
+  //重写 baffle 中的 smaller 方法
+  smaller() {
+    if (this.size === 1) {
+      return;
+    }
+    super.smaller();
+    this.height = config.BAFFLE_HEIGHT;
+    this.element.style.height = config.BAFFLE_HEIGHT + 'px';
+  }
 }

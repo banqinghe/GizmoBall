@@ -25,7 +25,31 @@ export default class Item {
     } else {
       this.height = height;
     }
-    //设置 div 元素的 css 样式中的长宽
+
+    this.element.style.height = this.height + 'px';
+    this.element.style.width = this.width + 'px';
+  }
+
+
+  // 放大方法，如果不符合则需要重写
+  bigger() {
+    this.size = this.size + 1;
+    this.width = this.size * config.GRID_WIDTH;
+    this.height = this.size * config.GRID_WIDTH;
+
+    this.element.style.height = this.height + 'px';
+    this.element.style.width = this.width + 'px';
+  }
+
+  // 缩小方法，如果不符合则需要重写
+  smaller() {
+    if (this.size === 1) {
+      return;
+    }
+    this.size = this.size - 1 ;
+    this.width = this.size * config.GRID_WIDTH;
+    this.height = this.size * config.GRID_WIDTH;
+
     this.element.style.height = this.height + 'px';
     this.element.style.width = this.width + 'px';
   }
