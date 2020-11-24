@@ -96,8 +96,8 @@ export default class Triangle extends Item {
         this.lineList = this.updateLineList(this.lineList, size);
         this.lineQueue  = this.updateLineList(this.lineQueue, size);
         this.slashQueue = this.updateLineList(this.slashQueue, size);
-        this.circleList = this.updateCircleList(this.circleList);
-        this.circleQueue = this.updateCircleList(this.circleQueue);
+        this.circleList = this.updateCircleList(this.circleList, size);
+        this.circleQueue = this.updateCircleList(this.circleQueue, size);
         console.log(this.lineList);
         console.log(this.circleList);
     }
@@ -120,7 +120,7 @@ export default class Triangle extends Item {
         return newCircleList;
     }
 
-    //更新线段的 List 中
+    //放大或缩小后更新存有线段的 List 中
     updateLineList(list, size) {
         let newLineList = [];
         let trans_x = this.x + size * config.GRID_WIDTH;
