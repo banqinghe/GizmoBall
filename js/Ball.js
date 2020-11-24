@@ -10,7 +10,7 @@ export default class Ball extends Item{
     this.centerX = this.x + config.GRID_WIDTH * size / 2;
     this.centerY = this.y + config.GRID_WIDTH * size / 2;
 
-    this.vx = .4;
+    this.vx = .1;
     this.vy = 0;
     // this.startTime = 0;
     this.lastTime = 0;

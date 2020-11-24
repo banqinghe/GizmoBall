@@ -98,8 +98,6 @@ export default class Triangle extends Item {
         this.slashQueue = this.updateLineList(this.slashQueue, size);
         this.circleList = this.updateCircleList(this.circleList, size);
         this.circleQueue = this.updateCircleList(this.circleQueue, size);
-        console.log(this.lineList);
-        console.log(this.circleList);
     }
 
     updateCircleList(list, size) {

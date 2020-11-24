@@ -20,7 +20,7 @@ export default class GameBoard {
         this.ballList = [];
         this.addBall(new Ball(5, 5, 1));
         for(let i = 0; i < 5; i++) {
-            this.addBall(new Ball(i, 0, 1));
+            this.addBall(new Ball(2*i, 0, 1));
         }
         // for(let i = 0; i < 19; i++){
         //     this.addBall(new Ball(i, 0, 1));
@@ -33,7 +33,7 @@ export default class GameBoard {
 
         this.addItem(new Baffle(9, 16, 4));
         //this.addItem(new Square(15, 10, 2));
-        this.addItem(new Triangle(5, 10, 4));
+        //this.addItem(new Triangle(5, 10, 4));
         //this.addItem(new Circle(10, 8, 3));
         this.dropListener();
         this.focusListener();
