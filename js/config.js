@@ -6,6 +6,8 @@ const config = {
   BOARD_HEIGHT: 600,  // 容器高度
   BAFFLE_HEIGHT: 10,
 
+  NUMBER_OFFSET: 0.001,
+
   // 棋盘 DOM 对象
   GAME_BOARD: document.querySelector('.game-board'),
 

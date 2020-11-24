@@ -16,7 +16,7 @@ export default class Circle {
         let ballR = ball.size * config.GRID_WIDTH / 2;
         let ballMiddleX = ball.x + ballR;
         let ballMiddleY = ball.y + ballR;
-        return ((ballR + this.r) ** 2 >= (ballMiddleX - this.middleX) ** 2 + (ballMiddleY - this.middleY) ** 2);
+        return (ballR + this.r) ** 2 - ((ballMiddleX - this.middleX) ** 2 + (ballMiddleY - this.middleY) ** 2) > -config.NUMBER_OFFSET;
     }
 
     changeV(ball){
@@ -25,7 +25,7 @@ export default class Circle {
         let ballMiddleY = ball.y + ballR;
 
         //作图可得,与圆心连线垂直的直线与x正方向夹角满足  tan angle = (x1 - x2) / (y2 - y1),需要特判 y1 = y2的情况
-        let lineAngle = ballMiddleY === this.middleY ? Math.acos(0) : Math.atan((ballMiddleX - this.middleX) / (this.middleY - ballMiddleY));
+        let lineAngle = Math.abs(ballMiddleY - this.middleY) < config.NUMBER_OFFSET ? Math.acos(0) : Math.atan((ballMiddleX - this.middleX) / (this.middleY - ballMiddleY));
         //console.log(lineAngle);
         //console.log(Math.tan(lineAngle));
         //考虑到球的运动是离散的，故相切点以被撞圆的边界为准
