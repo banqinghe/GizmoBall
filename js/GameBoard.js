@@ -32,9 +32,9 @@ export default class GameBoard {
         this.focusElement = null;
 
         this.addItem(new Baffle(9, 16, 4));
-        this.addItem(new Square(15, 10, 2));
-        this.addItem(new Triangle(5, 15, 5));
-        this.addItem(new Circle(10, 8, 3));
+        //this.addItem(new Square(15, 10, 2));
+        this.addItem(new Triangle(5, 10, 4));
+        //this.addItem(new Circle(10, 8, 3));
         this.dropListener();
         this.focusListener();
 

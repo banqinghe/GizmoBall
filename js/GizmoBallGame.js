@@ -67,6 +67,7 @@ export default class GizmoBallGame{
           break;
         case 'rotate':
           console.log('rotate');
+          this.rotateItem(this.gameBoard.focusElement);
           break;
         case 'delete':
           this.deleteItem(this.gameBoard.focusElement);
@@ -121,7 +122,7 @@ export default class GizmoBallGame{
     } else {
       item = this.getListItem(this.gameBoard.itemList, targetElement);
     }
-    item.smaller();
+    item.rotate();
   }
 
 

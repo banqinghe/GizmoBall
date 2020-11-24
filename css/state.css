@@ -1,5 +1,6 @@
 .active {
   position: absolute;
+  box-sizing: border-box;
 }
 
 .focus {

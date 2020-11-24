@@ -54,6 +54,22 @@ export default class Item {
     this.element.style.width = this.width + 'px';
   }
 
+  rotate() {
+    var transform = this.element.style.transform;
+    if (transform.includes("rotate")) {
+      let idx_f = transform.indexOf("rotate(") + "rotate(".length;
+      let idx_e = transform.indexOf("deg)");
+      let angle = parseInt(transform.substring(idx_f, idx_e));
+      let str_f = transform.substring(0, idx_f);
+      let str_e = transform.substring(idx_e);
+      transform = str_f + (angle === 270 ? 0 : angle + 90) + str_e;
+    } else {
+      transform += " rotate(90deg)";
+    }
+    this.element.style.transform = transform;
+
+  }
+
   collision(ball){
     this.lineList.forEach(function (line) {
       line.hit(ball);
