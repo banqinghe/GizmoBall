@@ -1,7 +1,6 @@
 /* 球 */
 .ball {
   background: radial-gradient(circle at 30px 30px,#fff,rgb(216, 230, 20));
-  /* position: absolute; */
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -13,7 +12,6 @@
   /* position: absolute; */
   width: 120px;
   height: 10px;
-  transition: transform .3s ease;
 }
 
 /* 矩形 */
@@ -22,7 +20,6 @@
   /* position: absolute; */
   width: 60px;
   height: 60px;
-  transition: transform .3s ease;
 }
 
 /* 黑洞 */
@@ -40,7 +37,6 @@
   border-top: none;
   border-bottom: 60px purple solid;
   border-right: 60px transparent solid;
-  transition: transform .3s ease;
 }
 
 /* 圆形 */
