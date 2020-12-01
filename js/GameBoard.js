@@ -29,88 +29,71 @@ export default class GameBoard {
 
         this.focusElement = null;
 
-        this.dropListener();
-        this.focusListener();
-
     }
 
-    dropListener() {
-        // 修改默认行为，使game board成为可放置目标
-        config.GAME_BOARD.addEventListener('dragover', e => {
-            e.preventDefault();
-        });
-
-        config.GAME_BOARD.addEventListener('dragenter', e => {
-            e.preventDefault();
-        });
-
-        // 处理放置事件
-        config.GAME_BOARD.addEventListener('drop', e => {
-            let x = Math.floor((e.pageX -1) / 30);
-            let y = Math.floor((e.pageY - 22) / 30);
-            let width = 0;
-            let height = 0;
-            switch (e.dataTransfer.getData('text')) {
-                case 'ball':
-                    width = config.defaultSize.BALL;
-                    if (this.checkCollision(x, y, width, width)) {
-                        this.addBall(new Ball(x,  y,  config.defaultSize.BALL));
-                        this.setBoardStatusTrue(x, y, width, width);
-                    }
-                    break;
-                case 'square':
-                    width = config.defaultSize.SQUARE;
-                    if (this.checkCollision(x, y, width, width)) {
-                        this.addItem(new Square(x, y, config.defaultSize.SQUARE));
-                        this.setBoardStatusTrue(x, y, width, width);
-                    }
-                    break;
-                case 'triangle':
-                    width = config.defaultSize.TRIANGLE;
-                    if (this.checkCollision(x, y, width, width)) {
-                        this.addItem(new Triangle(x,  y,  config.defaultSize.TRIANGLE));
-                        this.setBoardStatusTrue(x, y, width, width);
-                    }
-                    break;
-                case 'circle':
-                    width = config.defaultSize.CIRCLE;
-                    if (this.checkCollision(x, y, width, width)) {
-                        this.addItem(new Circle(x,  y,  config.defaultSize.CIRCLE));
-                        this.setBoardStatusTrue(x, y, width, width);
-                    }
-                    break;
-                case 'baffle':
-                    width = config.defaultSize.BAFFLE;
-                    height = Math.ceil(config.BAFFLE_HEIGHT / config.GRID_WIDTH);
-                    if (this.checkCollision(x, y, width, height)) {
-                        this.addItem(new Baffle(x,  y,  config.defaultSize.BAFFLE));
-                        this.setBoardStatusTrue(x, y, width, height);
-                    }
-                    this.addItem(new Baffle(x,  y,  config.defaultSize.BAFFLE, config.BAFFLE_HEIGHT));
-                    break;
-                case 'hole':
-                    width = config.defaultSize.HOLE;
-                    if (this.checkCollision(x, y, width, width)) {
-                        this.addItem(new Hole(x,  y,  config.defaultSize.HOLE));
-                        this.setBoardStatusTrue(x, y, width, width);
-                    }
-                    break;
-                case 'curve':
-                    width = config.defaultSize.CURVE;
-                    if (this.checkCollision(x, y, width, width)) {
-                        this.addItem(new BentPile(x,  y,  config.defaultSize.CURVE));
-                        this.setBoardStatusTrue(x, y, width, width);
-                    }
-                    break;
-                case 'pipe':
-                    width = config.defaultSize.PIPE ;
-                    if (this.checkCollision(x, y, width, width)) {
-                        this.addItem(new StraightPipe(x,  y,  config.defaultSize.PIPE));
-                        this.setBoardStatusTrue(x, y, width, width);
-                    }
-                    break;
-            }
-        })
+    // 接受放置类型和位置，将目标添加进 game board
+    dropItem(type, x, y) {
+        let width = 0;
+        let height = 0;
+        switch (type) {
+            case 'ball':
+                width = config.defaultSize.BALL;
+                if (this.checkCollision(x, y, width, width)) {
+                    this.addBall(new Ball(x, y, config.defaultSize.BALL));
+                    this.setBoardStatusTrue(x, y, width, width);
+                }
+                break;
+            case 'square':
+                width = config.defaultSize.SQUARE;
+                if (this.checkCollision(x, y, width, width)) {
+                    this.addItem(new Square(x, y, config.defaultSize.SQUARE));
+                    this.setBoardStatusTrue(x, y, width, width);
+                }
+                break;
+            case 'triangle':
+                width = config.defaultSize.TRIANGLE;
+                if (this.checkCollision(x, y, width, width)) {
+                    this.addItem(new Triangle(x, y, config.defaultSize.TRIANGLE));
+                    this.setBoardStatusTrue(x, y, width, width);
+                }
+                break;
+            case 'circle':
+                width = config.defaultSize.CIRCLE;
+                if (this.checkCollision(x, y, width, width)) {
+                    this.addItem(new Circle(x, y, config.defaultSize.CIRCLE));
+                    this.setBoardStatusTrue(x, y, width, width);
+                }
+                break;
+            case 'baffle':
+                width = config.defaultSize.BAFFLE;
+                height = Math.ceil(config.BAFFLE_HEIGHT / config.GRID_WIDTH);
+                if (this.checkCollision(x, y, width, height)) {
+                    this.addItem(new Baffle(x, y, config.defaultSize.BAFFLE));
+                    this.setBoardStatusTrue(x, y, width, height);
+                }
+                break;
+            case 'hole':
+                width = config.defaultSize.HOLE;
+                if (this.checkCollision(x, y, width, width)) {
+                    this.addItem(new Hole(x, y, config.defaultSize.HOLE));
+                    this.setBoardStatusTrue(x, y, width, width);
+                }
+                break;
+            case 'curve':
+                width = config.defaultSize.CURVE;
+                if (this.checkCollision(x, y, width, width)) {
+                    this.addItem(new BentPile(x, y, config.defaultSize.CURVE));
+                    this.setBoardStatusTrue(x, y, width, width);
+                }
+                break;
+            case 'pipe':
+                width = config.defaultSize.PIPE;
+                if (this.checkCollision(x, y, width, width)) {
+                    this.addItem(new StraightPipe(x, y, config.defaultSize.PIPE));
+                    this.setBoardStatusTrue(x, y, width, width);
+                }
+                break;
+        }
     }
 
     /*以格子作为单位长度*/
@@ -147,21 +130,36 @@ export default class GameBoard {
         }
     }
 
-    focusListener() {
-        config.GAME_BOARD.addEventListener('click', e => {
-            // 清除上一个 focus 元素的 outline 样式
-            if (this.focusElement) {
-                this.focusElement.classList.remove('focus');
-            }
-            // 选定新的 focus 元素
-            if ((!e.target.classList.contains('border')) && e.target !== config.GAME_BOARD) {
-                this.focusElement = e.target;
-                this.focusElement.classList.add('focus');
-            } else {
-                this.focusElement = null;
-            }
-        });
+    // 选中 focus 元素
+    setFocusElement(target) {
+        // 清除上一个 focus 元素的 outline 样式
+      if (this.focusElement) {
+        this.focusElement.classList.remove('focus');
+      }
+      // 选定新的 focus 元素
+      if ((!target.classList.contains('border')) && target !== config.GAME_BOARD) {
+        this.focusElement = target;
+        this.focusElement.classList.add('focus');
+      } else {
+        this.focusElement = null;
+      }
     }
+
+    // focusListener() {
+    //     config.GAME_BOARD.addEventListener('click', e => {
+    //         // 清除上一个 focus 元素的 outline 样式
+    //         if (this.focusElement) {
+    //             this.focusElement.classList.remove('focus');
+    //         }
+    //         // 选定新的 focus 元素
+    //         if ((!e.target.classList.contains('border')) && e.target !== config.GAME_BOARD) {
+    //             this.focusElement = e.target;
+    //             this.focusElement.classList.add('focus');
+    //         } else {
+    //             this.focusElement = null;
+    //         }
+    //     });
+    // }
 
     addBall(ball) {
 
@@ -172,12 +170,12 @@ export default class GameBoard {
         this.itemList.push(item);
     }
 
-    start(){
+    start() {
         this.ballList.forEach(ball => ball.timeStart());
         this.creeping(this);
     }
 
-    creeping(self){
+    creeping(self) {
 
         self.ballList.forEach(function (ball) {
             ball.move();
@@ -197,7 +195,7 @@ export default class GameBoard {
     }
 
     //  对象 size + 1
-    biggerItem(targetElement){
+    biggerItem(targetElement) {
         if (!targetElement) {
             return;
         }
@@ -214,7 +212,7 @@ export default class GameBoard {
         this.setBoardStatusFalse(item.x / config.GRID_WIDTH, item.y / config.GRID_WIDTH,
             item.width / config.GRID_WIDTH, item.height / config.GRID_WIDTH);
         if (!this.checkCollision(item.x / config.GRID_WIDTH, item.y / config.GRID_WIDTH,
-            item.width  / config.GRID_WIDTH + 1, item.height  / config.GRID_WIDTH + 1)) {
+                item.width / config.GRID_WIDTH + 1, item.height / config.GRID_WIDTH + 1)) {
             this.setBoardStatusTrue(item.x / config.GRID_WIDTH, item.y / config.GRID_WIDTH,
                 item.width / config.GRID_WIDTH, item.height / config.GRID_WIDTH);
             return;
@@ -225,7 +223,7 @@ export default class GameBoard {
     }
 
     // 对象 size - 1
-    smallerItem(targetElement){
+    smallerItem(targetElement) {
         if (!targetElement) {
             return;
         }
@@ -245,7 +243,7 @@ export default class GameBoard {
     }
 
     // 对象顺时针旋转 90°
-    rotateItem(targetElement){
+    rotateItem(targetElement) {
         if (!targetElement) {
             return;
         }
@@ -295,5 +293,26 @@ export default class GameBoard {
                 break;
             }
         }
+    }
+
+    // 获取所有 Item 的位置
+    getItemsLocation() {
+        let location = [];
+        this.ballList.forEach(item => {
+            location.push([item.constructor.name, item.x / config.GRID_WIDTH, item.y / config.GRID_WIDTH, // type, x, y
+                item.width / config.GRID_WIDTH, item.height / config.GRID_WIDTH, // width, height
+                item.angle
+            ]); // angle
+        });
+
+        this.itemList.forEach(item => {
+            if (item.constructor.name !== 'Border') {
+                location.push([item.constructor.name, item.x / config.GRID_WIDTH, item.y / config.GRID_WIDTH, // type, x, y
+                    item.width / config.GRID_WIDTH, item.height / config.GRID_WIDTH, // width, height
+                    item.angle
+                ]); // angle
+            }
+        });
+        return location;
     }
 }

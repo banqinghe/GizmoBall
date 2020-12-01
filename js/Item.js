@@ -6,6 +6,7 @@ export default class Item {
     this.x = coordX *  config.GRID_WIDTH;
     this.y = coordY * config.GRID_WIDTH;
     this.size = size;
+    this.angle = 0;
     this.circleList = [];
     this.lineList = [];
 
@@ -55,7 +56,7 @@ export default class Item {
   }
 
   rotate() {
-    var transform = this.element.style.transform;
+    let transform = this.element.style.transform;
     if (transform.includes("rotate")) {
       let idx_f = transform.indexOf("rotate(") + "rotate(".length;
       let idx_e = transform.indexOf("deg)");
@@ -67,7 +68,7 @@ export default class Item {
       transform += " rotate(90deg)";
     }
     this.element.style.transform = transform;
-
+    this.angle = (this.angle + 1) % 4;
   }
 
   collision(ball){

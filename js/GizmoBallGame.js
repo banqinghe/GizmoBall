@@ -1,37 +1,18 @@
+import config from "./config.js";
 import GameBoard from "./GameBoard.js";
 
-export default class GizmoBallGame{
-  constructor(){
+export default class GizmoBallGame {
+  constructor() {
     this.gameBoard = new GameBoard();
 
-    this.documentListener();
+    this.mode = 'design';
+
     this.dragListener();
+    this.dropListener();
+    this.focusListener();
     this.topbarListener();
     this.toolListener();
     this.modeListener();
-  }
-
-  documentListener() {
-    const fileContainer = document.querySelector('.file-container');
-    const fileList = document.querySelector('.file-list');
-
-    // 检测祖先关系
-    function isAncestor(ancestor, child) {
-      if (child === document.body) {
-        return false;
-      }
-      let currentParent = child.parentElement;
-      while (currentParent !== document.body && currentParent !== ancestor) {
-        currentParent = currentParent.parentElement; 
-      }
-      return currentParent === ancestor;
-    }
-
-    document.addEventListener('click', (e) => {
-      if (!isAncestor(fileContainer, e.target) || e.target === document.body) {
-        fileList.classList.remove('show');
-      }
-    });
   }
 
   // 为组件栏添加拖动监听
@@ -44,13 +25,35 @@ export default class GizmoBallGame{
     })
   }
 
+  // game board 添加放置事件监听
+  dropListener() {
+    // 修改默认行为，使game board成为可放置目标
+    config.GAME_BOARD.addEventListener('dragover', e => {
+      e.preventDefault();
+    });
+
+    config.GAME_BOARD.addEventListener('dragenter', e => {
+      e.preventDefault();
+    });
+
+    // 调用 gameboard 的放置函数
+    config.GAME_BOARD.addEventListener('drop', e => {
+      const x = Math.floor((e.pageX - 1) / 30);
+      const y = Math.floor((e.pageY - 22) / 30);
+      const type = e.dataTransfer.getData('text');
+      this.gameBoard.dropItem(type, x, y);
+    })
+  }
+
   // 为顶栏添加按钮监听
   topbarListener() {
     const fileButton = document.querySelector('#file-button');
     const aboutButton = document.querySelector('#about-button');
     const closeAbout = document.querySelector('.about-box-top span');
     const fileList = document.querySelector('.file-list');
-    
+    const fileContainer = document.querySelector('.file-container');
+
+    // 显示文件菜单
     fileButton.addEventListener('click', (e) => {
       fileList.classList.add('show');
       // console.log(fileList.className);
@@ -70,6 +73,25 @@ export default class GizmoBallGame{
     closeAbout.addEventListener('click', e => {
       aboutBox.classList.remove('show-box');
       aboutPage.style.display = 'none'
+    });
+
+    // 检测祖先关系
+    function isAncestor(ancestor, child) {
+      if (child === document.body) {
+        return false;
+      }
+      let currentParent = child.parentElement;
+      while (currentParent !== document.body && currentParent !== ancestor) {
+        currentParent = currentParent.parentElement;
+      }
+      return currentParent === ancestor;
+    }
+
+    // 点击其他地方，菜单消失
+    document.addEventListener('click', (e) => {
+      if (!isAncestor(fileContainer, e.target) || e.target === document.body) {
+        fileList.classList.remove('show');
+      }
     });
   }
 
@@ -96,17 +118,23 @@ export default class GizmoBallGame{
           this.gameBoard.deleteItem(this.gameBoard.focusElement);
           break;
       }
-    })    
+    })
   }
-
-
 
   modeListener() {
     const designButton = document.querySelector('#design');
     const playButton = document.querySelector('#play');
 
     playButton.addEventListener('click', e => {
+      this.mode = 'play';
       this.gameBoard.start();
+    });
+  }
+
+  // 检测 focus 元素
+  focusListener() {
+    config.GAME_BOARD.addEventListener('click', e => {
+      this.gameBoard.setFocusElement(e.target);
     });
   }
 }
