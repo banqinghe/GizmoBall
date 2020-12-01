@@ -10,7 +10,7 @@ export default class Ball extends Item{
     this.centerX = this.x + config.GRID_WIDTH * size / 2;
     this.centerY = this.y + config.GRID_WIDTH * size / 2;
 
-    this.vx = .1;
+    this.vx = 0;
     this.vy = 0;
     // this.startTime = 0;
     this.lastTime = 0;
@@ -27,6 +27,15 @@ export default class Ball extends Item{
     this.element.classList.add('ball');
     this.circleList.push(new Circle(this.x, this.y, this.size));
     this.setLineAndCircleList(this.size);
+  }
+
+  checkCollision(item) {
+    super.checkCollision();
+    this.circleList.forEach(function (circle) {
+      if(circle.checkCollision(this)){
+
+      }
+    });
   }
 
   bigger() {
@@ -88,46 +97,4 @@ export default class Ball extends Item{
     this.circleList.push(new Circle(this.x, this.y, this.size));
   }
 
-  // 挡板碰撞检测
-  // 边缘碰撞检测
-  /*collisionDetection(self) {
-    switch (self.hitTheWall(self)) {
-      case 'T':
-        self.vy = Math.abs(self.vy);
-        break;
-      case 'L':
-        self.vx = Math.abs(self.vx);
-        break;
-      case 'R':
-        self.vx = -Math.abs(self.vx);
-        break;
-      case 'B':
-        self.vy = -Math.abs(self.vy);
-        break;
-      case 'corner':
-        self.vy = -self.vy;
-        self.vx = -self.vx;
-        break;
-    }
-  }
-
-  hitTheWall(self) {
-    if (self.y <= 0) {
-      if ((self.x >= config.BOARD_WIDTH - self.size * config.GRID_WIDTH && self.vx > 0) ||
-      self.x <= 0) {
-        return 'corner';
-      }
-      return 'T';
-    } else if (self.y >= config.BOARD_HEIGHT - self.size * config.GRID_WIDTH && self.vy > 0) {
-      if ((self.x >= config.BOARD_WIDTH - self.size * config.GRID_WIDTH && self.vx > 0) ||
-        self.x <= 0) {
-        return 'corner';
-      }
-      return 'B';
-    } else if (self.x >= config.BOARD_WIDTH - self.size * config.GRID_WIDTH && self.vx > 0) {
-      return 'R';
-    } else if (self.x <= 0) {
-      return 'L';
-    }
-  }*/
 }

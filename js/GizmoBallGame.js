@@ -75,118 +75,31 @@ export default class GizmoBallGame{
 
   // 工具栏监听
   toolListener() {
-    // const smallerButton = document.querySelector('#smaller');
-    // const biggerButton = document.querySelector('#bigger');
-    // const rotateButton = document.querySelector('#rotate');
-    // const deleteButton = document.querySelector('#delete');
 
     const tools = document.querySelector('.tools .container');
     tools.addEventListener('click', e => {
       switch (e.target.id) {
         case 'smaller':
-          this.smallerItem(this.gameBoard.focusElement);
+          this.gameBoard.smallerItem(this.gameBoard.focusElement);
           console.log('smaller');
           break;
         case 'bigger':
           console.log('bigger');
-          this.biggerItem(this.gameBoard.focusElement);
+          this.gameBoard.biggerItem(this.gameBoard.focusElement);
           break;
         case 'rotate':
           console.log('rotate');
-          this.rotateItem(this.gameBoard.focusElement);
+          this.gameBoard.rotateItem(this.gameBoard.focusElement);
           break;
         case 'delete':
-          this.deleteItem(this.gameBoard.focusElement);
+          console.log('delete');
+          this.gameBoard.deleteItem(this.gameBoard.focusElement);
           break;
       }
     })    
   }
 
-  //  对象 size + 1
-  biggerItem(targetElement){
-    if (!targetElement) {
-      return;
-    }
 
-    let item = null;
-    //获取相应 item 对象，执行 bigger 方法
-    if (targetElement.classList.contains('ball')) {
-      item = this.getListItem(this.gameBoard.ballList, targetElement)
-    } else {
-      item = this.getListItem(this.gameBoard.itemList, targetElement);
-    }
-    item.bigger();
-  }
-
-  // 对象 size - 1
-  smallerItem(targetElement){
-    if (!targetElement) {
-      return;
-    }
-
-    let item = null;
-    //获取相应 item 对象，执行 smaller 方法
-    if (targetElement.classList.contains('ball')) {
-      item = this.getListItem(this.gameBoard.ballList, targetElement)
-    } else {
-      item = this.getListItem(this.gameBoard.itemList, targetElement);
-    }
-    item.smaller();
-  }
-
-  // 对象顺时针旋转 90°
-  rotateItem(targetElement){
-    if (!targetElement) {
-      return;
-    }
-
-    let item = null;
-    //获取相应 item 对象，执行 smaller 方法
-    if (targetElement.classList.contains('ball')) {
-      item = this.getListItem(this.gameBoard.ballList, targetElement);
-
-    } else {
-      item = this.getListItem(this.gameBoard.itemList, targetElement);
-    }
-    item.rotate();
-  }
-
-
-  // 删除元素
-  deleteItem(targetElement) {
-    if (!targetElement) {
-      return;
-    }
-
-    // 遍历 item，寻找并删除目标元素
-    if (targetElement.classList.contains('ball')) {
-      this.deleteListItem(this.gameBoard.ballList, targetElement);
-    } else {
-      this.deleteListItem(this.gameBoard.itemList, targetElement);
-    }
-    // 清除 focus 元素
-    this.gameBoard.focusElement = null;
-  }
-
-  // 工具函数，用于获取 list 中的指定项
-  getListItem(list, targetElement) {
-    for (let i = 0, len = list.length; i < len; i++) {
-      if (list[i].element === targetElement) {
-        return list[i];
-      }
-    }
-  }
-
-  // 工具函数，用于删除 list 中的指定项
-  deleteListItem(list, targetElement) {
-    for (let i = 0, len = list.length; i < len; i++) {
-      if (list[i].element === targetElement) {
-        list[i].deleteElement();
-        list.splice(i, 1);
-        break;
-      }
-    }
-  }
 
   modeListener() {
     const designButton = document.querySelector('#design');

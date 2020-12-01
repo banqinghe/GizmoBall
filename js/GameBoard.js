@@ -13,32 +13,25 @@ export default class GameBoard {
     constructor() {
         // 除小球外需检测碰撞的 item 列表
         this.itemList = [];
+
         // 将边框类放在最下方，不遮挡其他 active 元素
         this.addItem(new Border());
 
         //小球列表
         this.ballList = [];
-        this.addBall(new Ball(5, 5, 1));
-        for(let i = 0; i < 5; i++) {
-            this.addBall(new Ball(2*i, 0, 1));
+
+        this.boardStatus = new Array(20);
+        for (let i = 0; i < 20; i++) {
+            this.boardStatus[i] = new Array(20).fill(false);
         }
-        // for(let i = 0; i < 19; i++){
-        //     this.addBall(new Ball(i, 0, 1));
-        //     this.addBall(new Ball(19, i, 1));
-        //     this.addBall(new Ball(i+1, 19, 1));
-        //     this.addBall(new Ball(0, i+1, 1));
-        // }
+
+        this.setBoardStatusFalse(0, 0, 20, 20);
 
         this.focusElement = null;
 
-        this.addItem(new Baffle(9, 16, 4));
-        //this.addItem(new Square(15, 10, 2));
-        //this.addItem(new Triangle(5, 10, 4));
-        //this.addItem(new Circle(10, 8, 3));
         this.dropListener();
         this.focusListener();
 
-        // this.start();
     }
 
     dropListener() {
@@ -55,37 +48,103 @@ export default class GameBoard {
         config.GAME_BOARD.addEventListener('drop', e => {
             let x = Math.floor((e.pageX -1) / 30);
             let y = Math.floor((e.pageY - 22) / 30);
+            let width = 0;
+            let height = 0;
             switch (e.dataTransfer.getData('text')) {
                 case 'ball':
-                    this.addBall(new Ball(x,  y,  config.defaultSize.BALL));
+                    width = config.defaultSize.BALL;
+                    if (this.checkCollision(x, y, width, width)) {
+                        this.addBall(new Ball(x,  y,  config.defaultSize.BALL));
+                        this.setBoardStatusTrue(x, y, width, width);
+                    }
                     break;
                 case 'square':
-                    this.addItem(new Square(x,  y,  config.defaultSize.SQUARE));
+                    width = config.defaultSize.SQUARE;
+                    if (this.checkCollision(x, y, width, width)) {
+                        this.addItem(new Square(x, y, config.defaultSize.SQUARE));
+                        this.setBoardStatusTrue(x, y, width, width);
+                    }
                     break;
                 case 'triangle':
-                    this.addItem(new Triangle(x,  y,  config.defaultSize.TRIANGLE));
+                    width = config.defaultSize.TRIANGLE;
+                    if (this.checkCollision(x, y, width, width)) {
+                        this.addItem(new Triangle(x,  y,  config.defaultSize.TRIANGLE));
+                        this.setBoardStatusTrue(x, y, width, width);
+                    }
                     break;
                 case 'circle':
-                    this.addItem(new Circle(x,  y,  config.defaultSize.CIRCLE));
+                    width = config.defaultSize.CIRCLE;
+                    if (this.checkCollision(x, y, width, width)) {
+                        this.addItem(new Circle(x,  y,  config.defaultSize.CIRCLE));
+                        this.setBoardStatusTrue(x, y, width, width);
+                    }
                     break;
                 case 'baffle':
+                    width = config.defaultSize.BAFFLE;
+                    height = Math.ceil(config.BAFFLE_HEIGHT / config.GRID_WIDTH);
+                    if (this.checkCollision(x, y, width, height)) {
+                        this.addItem(new Baffle(x,  y,  config.defaultSize.BAFFLE));
+                        this.setBoardStatusTrue(x, y, width, height);
+                    }
                     this.addItem(new Baffle(x,  y,  config.defaultSize.BAFFLE, config.BAFFLE_HEIGHT));
                     break;
                 case 'hole':
-                    this.addItem(new Hole(x,  y,  config.defaultSize.HOLE));
+                    width = config.defaultSize.HOLE;
+                    if (this.checkCollision(x, y, width, width)) {
+                        this.addItem(new Hole(x,  y,  config.defaultSize.HOLE));
+                        this.setBoardStatusTrue(x, y, width, width);
+                    }
                     break;
                 case 'curve':
-                    this.addItem(new BentPile(x,  y,  config.defaultSize.CURVE));
+                    width = config.defaultSize.CURVE;
+                    if (this.checkCollision(x, y, width, width)) {
+                        this.addItem(new BentPile(x,  y,  config.defaultSize.CURVE));
+                        this.setBoardStatusTrue(x, y, width, width);
+                    }
                     break;
                 case 'pipe':
-                    this.addItem(new StraightPipe(x,  y,  config.defaultSize.PIPE));
+                    width = config.defaultSize.PIPE ;
+                    if (this.checkCollision(x, y, width, width)) {
+                        this.addItem(new StraightPipe(x,  y,  config.defaultSize.PIPE));
+                        this.setBoardStatusTrue(x, y, width, width);
+                    }
                     break;
-
             }
-            // this.addElement(e.dataTransfer.getData('text'), e.pageX -1, e.pageY - 22);
-            // console.log(e.dataTransfer.getData('text'));
-            // console.log(e.pageX -1 , e.pageY - 22);
         })
+    }
+
+    /*以格子作为单位长度*/
+    checkCollision(x, y, width, height) {
+        if (x + width > 20 || y + height > 20) {
+            return false;
+        }
+
+        for (let i = y; i < y + height; i++) {
+            for (let j = x; j < x + width; j++) {
+                if (this.boardStatus[i][j] === true) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /*将相应区域面板方格设置为 True*/
+    setBoardStatusTrue(x, y, width, height) {
+        for (let i = y; i < y + height; i++) {
+            for (let j = x; j < x + width; j++) {
+                this.boardStatus[i][j] = true;
+            }
+        }
+    }
+
+    /*将相应区域面板方格设置为 False*/
+    setBoardStatusFalse(x, y, width, height) {
+        for (let i = y; i < y + height; i++) {
+            for (let j = x; j < x + width; j++) {
+                this.boardStatus[i][j] = false;
+            }
+        }
     }
 
     focusListener() {
@@ -95,7 +154,7 @@ export default class GameBoard {
                 this.focusElement.classList.remove('focus');
             }
             // 选定新的 focus 元素
-            if (!e.target.classList.contains('border')) {
+            if ((!e.target.classList.contains('border')) && e.target !== config.GAME_BOARD) {
                 this.focusElement = e.target;
                 this.focusElement.classList.add('focus');
             } else {
@@ -105,6 +164,7 @@ export default class GameBoard {
     }
 
     addBall(ball) {
+
         this.ballList.push(ball);
     }
 
@@ -136,7 +196,104 @@ export default class GameBoard {
         window.requestAnimationFrame(() => self.creeping(self));
     }
 
-    addToItemList(){
+    //  对象 size + 1
+    biggerItem(targetElement){
+        if (!targetElement) {
+            return;
+        }
 
+        let item = null;
+        //获取相应 item 对象，执行 bigger 方法
+        if (targetElement.classList.contains('ball')) {
+            item = this.getListItem(this.ballList, targetElement)
+        } else {
+            item = this.getListItem(this.itemList, targetElement);
+        }
+
+        // 如果有碰撞或越过边框边界，则放弃
+        this.setBoardStatusFalse(item.x / config.GRID_WIDTH, item.y / config.GRID_WIDTH,
+            item.width / config.GRID_WIDTH, item.height / config.GRID_WIDTH);
+        if (!this.checkCollision(item.x / config.GRID_WIDTH, item.y / config.GRID_WIDTH,
+            item.width  / config.GRID_WIDTH + 1, item.height  / config.GRID_WIDTH + 1)) {
+            this.setBoardStatusTrue(item.x / config.GRID_WIDTH, item.y / config.GRID_WIDTH,
+                item.width / config.GRID_WIDTH, item.height / config.GRID_WIDTH);
+            return;
+        }
+        item.bigger();
+        this.setBoardStatusTrue(item.x / config.GRID_WIDTH, item.y / config.GRID_WIDTH,
+            item.width / config.GRID_WIDTH, item.height / config.GRID_WIDTH);
+    }
+
+    // 对象 size - 1
+    smallerItem(targetElement){
+        if (!targetElement) {
+            return;
+        }
+
+        let item = null;
+        //获取相应 item 对象，执行 smaller 方法
+        if (targetElement.classList.contains('ball')) {
+            item = this.getListItem(this.ballList, targetElement)
+        } else {
+            item = this.getListItem(this.itemList, targetElement);
+        }
+        this.setBoardStatusFalse(item.x / config.GRID_WIDTH, item.y / config.GRID_WIDTH,
+            item.width / config.GRID_WIDTH, item.height / config.GRID_WIDTH);
+        item.smaller();
+        this.setBoardStatusTrue(item.x / config.GRID_WIDTH, item.y / config.GRID_WIDTH,
+            item.width / config.GRID_WIDTH, item.height / config.GRID_WIDTH);
+    }
+
+    // 对象顺时针旋转 90°
+    rotateItem(targetElement){
+        if (!targetElement) {
+            return;
+        }
+
+        let item = null;
+        //获取相应 item 对象，执行 smaller 方法
+        if (targetElement.classList.contains('ball')) {
+            item = this.getListItem(this.ballList, targetElement);
+
+        } else {
+            item = this.getListItem(this.itemList, targetElement);
+        }
+        item.rotate();
+    }
+
+    // 删除元素
+    deleteItem(targetElement) {
+        if (!targetElement) {
+            return;
+        }
+
+        // 遍历 item，寻找并删除目标元素
+        if (targetElement.classList.contains('ball')) {
+            this.deleteListItem(this.ballList, targetElement);
+        } else {
+            this.deleteListItem(this.itemList, targetElement);
+        }
+        // 清除 focus 元素
+        this.focusElement = null;
+    }
+
+    // 工具函数，用于获取 list 中的指定项
+    getListItem(list, targetElement) {
+        for (let i = 0, len = list.length; i < len; i++) {
+            if (list[i].element === targetElement) {
+                return list[i];
+            }
+        }
+    }
+
+    // 工具函数，用于删除 list 中的指定项
+    deleteListItem(list, targetElement) {
+        for (let i = 0, len = list.length; i < len; i++) {
+            if (list[i].element === targetElement) {
+                list[i].deleteElement();
+                list.splice(i, 1);
+                break;
+            }
+        }
     }
 }

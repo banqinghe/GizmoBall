@@ -83,4 +83,8 @@ export default class Item {
   deleteElement() {
     this.element.remove();
   }
+
+  checkCollision() {
+
+  }
 }
