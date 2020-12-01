@@ -14,8 +14,16 @@
   <div class="app">
     <div class="topbar">
       <div class="topbar-buttons">
-        <button id="file-button">文件</button>
-        <button id="about-button">关于</button>
+        <div class="topbar-container file-container">
+          <button id="file-button">文件</button>
+          <ul class="file-list">
+            <li id="import-file">导入文件</li>
+            <li id="export-file">导出文件</li>
+          </ul>
+        </div>
+        <div class="topbar-container">
+          <button id="about-button">关于</button>
+        </div>
       </div>
       <p>OOAD Group 17 - Gizmo Ball</p>
 

@@ -4,10 +4,34 @@ export default class GizmoBallGame{
   constructor(){
     this.gameBoard = new GameBoard();
 
+    this.documentListener();
     this.dragListener();
     this.topbarListener();
     this.toolListener();
     this.modeListener();
+  }
+
+  documentListener() {
+    const fileContainer = document.querySelector('.file-container');
+    const fileList = document.querySelector('.file-list');
+
+    // 检测祖先关系
+    function isAncestor(ancestor, child) {
+      if (child === document.body) {
+        return false;
+      }
+      let currentParent = child.parentElement;
+      while (currentParent !== document.body && currentParent !== ancestor) {
+        currentParent = currentParent.parentElement; 
+      }
+      return currentParent === ancestor;
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!isAncestor(fileContainer, e.target) || e.target === document.body) {
+        fileList.classList.remove('show');
+      }
+    });
   }
 
   // 为组件栏添加拖动监听
@@ -25,9 +49,11 @@ export default class GizmoBallGame{
     const fileButton = document.querySelector('#file-button');
     const aboutButton = document.querySelector('#about-button');
     const closeAbout = document.querySelector('.about-box-top span');
+    const fileList = document.querySelector('.file-list');
     
-    fileButton.addEventListener('click', e => {
-      console.log('file');
+    fileButton.addEventListener('click', (e) => {
+      fileList.classList.add('show');
+      // console.log(fileList.className);
     });
 
     const aboutPage = document.querySelector('.about-page');
