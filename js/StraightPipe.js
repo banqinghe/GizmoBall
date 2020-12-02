@@ -2,6 +2,7 @@ import Item from "./Item.js";
 import Line from "./collision/Line.js";
 import Circle from "./collision/Circle.js";
 import config from "./config.js";
+import Arc from "./collision/Arc.js";
 
 export default class StraightPipe extends Item {
     constructor(coordX, coordY, size) {
@@ -12,6 +13,7 @@ export default class StraightPipe extends Item {
     init(){
         // 根绝参数设定初始位置
         this.element.classList.add('pipe');
+
         //维护一个 lineQueue 用于旋转时的线段替换，下标 0 和下标 1 用于正向，下标 2 和下标 3 用于反向
         this.lineQueue = [
             new Line(this.x, this.y, this.size, Math.acos(0)),
@@ -31,6 +33,24 @@ export default class StraightPipe extends Item {
         this.circleList.push(new Circle(this.x + this.width, this.y + this.height,0));
     }
 
+    collision(ball) {
+        super.collision(ball);
+        if (this.lineQueue[2].checkCollision(ball) || this.lineQueue[3].checkCollision(ball)) {
+            if (this.angle % 2 === 0) {
+                let sign = ball.vy > 0 ? 1 : -1;
+                ball.vy = sign * 0.5;
+                ball.vx = 0;
+                ball.x = this.x + this.width / 2 - ball.radius;
+            } else {
+                let sign = ball.vx > 0 ? 1 : -1;
+                ball.vx = sign * 0.5;
+                ball.vy = 0;
+                ball.y = this.y + this.height / 2 - ball.radius;
+            }
+            ball.element.style.transform = `translate(${ball.x}px, ${ball.y}px)`;
+        }
+    }
+
     bigger() {
         super.bigger();
         this.setLineAndCircleList();
@@ -48,6 +68,7 @@ export default class StraightPipe extends Item {
         this.lineList = this.updateLineList(this.lineList, this.size);
         this.lineQueue = this.updateLineList(this.lineQueue, this.size);
         this.circleList = this.updateCircleList(this.circleList, this.size);
+
     }
 
     rotate() {
@@ -101,4 +122,10 @@ export default class StraightPipe extends Item {
         return newCircleList;
     }
 
+    updateArcList(list, size) {
+        let newArcList = [];
+        list.forEach(function (arc) {
+            newArcList.push(new Arc(arc.x, arc.y, size, arc.angle));
+        })
+    }
 }

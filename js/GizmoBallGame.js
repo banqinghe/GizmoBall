@@ -129,6 +129,10 @@ export default class GizmoBallGame {
       this.mode = 'play';
       this.gameBoard.start();
     });
+
+    designButton.addEventListener('click', e => {
+      this.mode = 'design';
+    });
   }
 
   // 检测 focus 元素
