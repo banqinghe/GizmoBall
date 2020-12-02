@@ -145,24 +145,7 @@ export default class GameBoard {
       }
     }
 
-    // focusListener() {
-    //     config.GAME_BOARD.addEventListener('click', e => {
-    //         // 清除上一个 focus 元素的 outline 样式
-    //         if (this.focusElement) {
-    //             this.focusElement.classList.remove('focus');
-    //         }
-    //         // 选定新的 focus 元素
-    //         if ((!e.target.classList.contains('border')) && e.target !== config.GAME_BOARD) {
-    //             this.focusElement = e.target;
-    //             this.focusElement.classList.add('focus');
-    //         } else {
-    //             this.focusElement = null;
-    //         }
-    //     });
-    // }
-
     addBall(ball) {
-
         this.ballList.push(ball);
     }
 
@@ -180,16 +163,20 @@ export default class GameBoard {
         self.ballList.forEach(function (ball) {
             ball.move();
             //检测 item 和小球的碰撞
-            self.itemList.forEach(function (item) {
+            for (let i = 0; i < self.itemList.length; i++) {
+                let item = self.itemList[i];
                 item.collision(ball);
-            });
+                if (item.element.classList.contains('Hole')) {
+                    self.itemList.remove(item);
+                    i--;
+                }
+            }
             //检测与其他小球的碰撞
             self.ballList.forEach(function (item) {
                 if (item !== ball)
                     item.collision(ball);
             });
             //小球进行一次移动
-
         });
         window.requestAnimationFrame(() => self.creeping(self));
     }

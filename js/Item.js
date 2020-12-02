@@ -85,6 +85,7 @@ export default class Item {
     this.element.remove();
   }
 
+  /*由子类实现*/
   checkCollision() {
 
   }

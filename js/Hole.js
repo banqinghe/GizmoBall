@@ -13,6 +13,13 @@ export default class Hole extends Item {
         this.setLineAndCircleList(this.size);
     }
 
+    /*取出构成 Hole 的圆形与小球进行碰撞检测*/
+    collision(ball) {
+        if (this.circleList[0].checkCollision(ball)) {
+            ball.deleteElement();
+        }
+    }
+
     // 没有碰撞....
     bigger() {
         super.bigger();
