@@ -251,13 +251,15 @@ export default class GameBoard {
         if (!targetElement) {
             return;
         }
-
+        let item = null;
         // 遍历 item，寻找并删除目标元素
         if (targetElement.classList.contains('ball')) {
-            this.deleteListItem(this.ballList, targetElement);
+            item = this.deleteListItem(this.ballList, targetElement);
         } else {
-            this.deleteListItem(this.itemList, targetElement);
+            item = this.deleteListItem(this.itemList, targetElement);
         }
+        this.setBoardStatusFalse(item.x / config.GRID_WIDTH, item.y / config.GRID_WIDTH,
+            item.width / config.GRID_WIDTH, item.height / config.GRID_WIDTH);
         // 清除 focus 元素
         this.focusElement = null;
     }
@@ -275,9 +277,10 @@ export default class GameBoard {
     deleteListItem(list, targetElement) {
         for (let i = 0, len = list.length; i < len; i++) {
             if (list[i].element === targetElement) {
+                let target = list[i];
                 list[i].deleteElement();
                 list.splice(i, 1);
-                break;
+                return target;
             }
         }
     }
