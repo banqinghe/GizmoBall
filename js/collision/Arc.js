@@ -27,14 +27,18 @@ export default class Arc {
 
         if( ballMiddleX - limL > -config.NUMBER_OFFSET && ballMiddleX - limR < config.NUMBER_OFFSET &&
             ballMiddleY - limU > -config.NUMBER_OFFSET && ballMiddleY - limD < config.NUMBER_OFFSET){ //判断条件用于排除另外三部分弧形的影响
-                return  this.r ** 2 - ((ballMiddleX - this.middleX) ** 2 + (ballMiddleY - this.middleY) ** 2) < config.NUMBER_OFFSET //弧形半径小于圆心距离
-                    &&  (ballR + this.r) ** 2 - ((ballMiddleX - this.middleX) ** 2 + (ballMiddleY - this.middleY) ** 2) > -config.NUMBER_OFFSET;//弧形半径与小球半径大于圆心距离
+                //以下为发生碰撞的情况
+                if (this.r ** 2 - ((ballMiddleX - this.middleX) ** 2 + (ballMiddleY - this.middleY) ** 2) < config.NUMBER_OFFSET ){//弧形半径小于圆心距离
+                    return (ballR + this.r) ** 2 - ((ballMiddleX - this.middleX) ** 2 + (ballMiddleY - this.middleY) ** 2) > -config.NUMBER_OFFSET;//弧形半径与小球半径之和大于圆心距离
+                } else{
+                    return (this.r - ballR) ** 2 - ((ballMiddleX - this.middleX) ** 2 + (ballMiddleY - this.middleY) ** 2) < config.NUMBER_OFFSET; //弧形半径与小球半径之差小于圆心距离
+                }
         }
         return false;
     }
 
     changeV(ball){
-        new Circle(this.x1, this.y1, this.size).changeV(ball);
+        new Circle(this.middleX - this.r, this.middleY - this.r, this.size).changeV(ball);
     }
 
     hit(ball) {
