@@ -38,12 +38,14 @@ export default class Arc {
     }
 
     changeV(ball){
-        new Circle(this.middleX - this.r, this.middleY - this.r, this.size).changeV(ball);
+        new Circle(this.middleX - this.r, this.middleY - this.r, this.size * 2).changeV(ball);
     }
 
     hit(ball) {
         if(this.checkCollision(ball)){
             this.changeV(ball);
+            return true;
         }
+        return false;
     }
 }

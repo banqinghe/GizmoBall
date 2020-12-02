@@ -38,6 +38,8 @@ export default class Circle {
     hit(ball) {
         if(this.checkCollision(ball)){
             this.changeV(ball);
+            return true;
         }
+        return false;
     }
 }
