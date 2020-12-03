@@ -1,5 +1,9 @@
 import config from "./config.js";
 import GameBoard from "./GameBoard.js";
+import {
+  saveLocation,
+  loadLocation
+} from './lib/FileVisitor.js';
 
 export default class GizmoBallGame {
   constructor() {
@@ -10,7 +14,7 @@ export default class GizmoBallGame {
     this.dragListener();
     this.dropListener();
     this.focusListener();
-    this.topbarListener();
+    this.fileListener();
     this.toolListener();
     this.modeListener();
   }
@@ -46,33 +50,20 @@ export default class GizmoBallGame {
   }
 
   // 为顶栏添加按钮监听
-  topbarListener() {
-    const fileButton = document.querySelector('#file-button');
-    const aboutButton = document.querySelector('#about-button');
-    const closeAbout = document.querySelector('.about-box-top span');
-    const fileList = document.querySelector('.file-list');
-    const fileContainer = document.querySelector('.file-container');
+  fileListener() {
+    const fileButton = document.querySelector('#file-button'); // 文件按钮
+    const fileList = document.querySelector('.file-list'); // 文件列表
+    const fileContainer = document.querySelector('.file-container'); // 文件列表与文件按钮
+
+    const exportButton = document.querySelector('#export-file'); // 导出文件按钮
+    const importButton = document.querySelector('#import-file'); // 导入文件按钮
+
+    const fileInput = document.querySelector('#location-input');
 
     // 显示文件菜单
     fileButton.addEventListener('click', (e) => {
       fileList.classList.add('show');
       // console.log(fileList.className);
-    });
-
-    const aboutPage = document.querySelector('.about-page');
-    const aboutBox = document.querySelector('.about-box');
-
-    // 弹出信息框
-    aboutButton.addEventListener('click', e => {
-      aboutPage.style.display = 'flex';
-      // 渲染完成后展示，开始过渡动画
-      setTimeout(() => aboutBox.classList.add('show-box'), 0);
-    });
-
-    // 关闭信息框
-    closeAbout.addEventListener('click', e => {
-      aboutBox.classList.remove('show-box');
-      aboutPage.style.display = 'none'
     });
 
     // 检测祖先关系
@@ -92,6 +83,46 @@ export default class GizmoBallGame {
       if (!isAncestor(fileContainer, e.target) || e.target === document.body) {
         fileList.classList.remove('show');
       }
+    });
+
+    // 将当前位置信息导出为文件
+    exportButton.addEventListener('click', (e) => {
+      saveLocation(this.gameBoard.getItemsLocation());
+      fileList.classList.remove('show');
+    });
+
+    // 导入位置信息
+    importButton.addEventListener('click', (e) => {
+      loadLocation(fileInput)
+        .then(location => {
+          // 根据 location 设置元素位置（函数空缺）
+          console.log(location);
+        })
+        .catch(msg => {
+          console.error(msg);
+        })
+    });
+  }
+
+  // 关于按键 监听
+  aboutListener() {
+    const aboutButton = document.querySelector('#about-button'); // 关于按钮  
+    const closeAbout = document.querySelector('.about-box-top span'); // 关闭关于对话框
+
+    const aboutPage = document.querySelector('.about-page');
+    const aboutBox = document.querySelector('.about-box');
+
+    // 弹出信息框
+    aboutButton.addEventListener('click', e => {
+      aboutPage.style.display = 'flex';
+      // 渲染完成后展示，开始过渡动画
+      setTimeout(() => aboutBox.classList.add('show-box'), 0);
+    });
+
+    // 关闭信息框
+    closeAbout.addEventListener('click', e => {
+      aboutBox.classList.remove('show-box');
+      aboutPage.style.display = 'none'
     });
   }
 
