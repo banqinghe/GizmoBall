@@ -20,6 +20,10 @@ export default class Hole extends Item {
         }
     }
 
+    isCollided(ball) {
+        return this.circleList[0].checkCollision(ball);
+    }
+
     // 没有碰撞....
     bigger() {
         super.bigger();

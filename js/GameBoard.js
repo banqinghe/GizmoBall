@@ -160,24 +160,25 @@ export default class GameBoard {
 
     creeping(self) {
 
-        self.ballList.forEach(function (ball) {
+        for (let i = 0; i < self.ballList.length; i++) {
+            let ball = self.ballList[i];
             ball.move();
             //检测 item 和小球的碰撞
-            for (let i = 0; i < self.itemList.length; i++) {
-                let item = self.itemList[i];
-                item.collision(ball);
-                if (item.element.classList.contains('Hole')) {
-                    self.itemList.remove(item);
+            self.itemList.forEach(function (item) {
+                console.log(item.element.classList);
+                if (item.element.classList.contains('hole') && item.isCollided(ball)) {
+                    self.ballList.splice(i, 1);
                     i--;
                 }
-            }
+                item.collision(ball);
+            });
             //检测与其他小球的碰撞
             self.ballList.forEach(function (item) {
                 if (item !== ball)
                     item.collision(ball);
             });
             //小球进行一次移动
-        });
+        }
         window.requestAnimationFrame(() => self.creeping(self));
     }
 
