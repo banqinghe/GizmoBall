@@ -13,7 +13,7 @@ const config = {
 
   // 图形的默认大小
   defaultSize: {
-    BALL: 1,
+    BALL: .8,
     SQUARE: 2,
     HOLE: 1,
     TRIANGLE: 2,
