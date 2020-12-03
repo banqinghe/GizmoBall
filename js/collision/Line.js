@@ -12,7 +12,7 @@ export default class Line {
         this.y2 = Math.sin(angle) * length + this.y1;
     }
 
-    checkCollision(ball){
+    checkCollision(ball) {
         let ballR = ball.size * config.GRID_WIDTH / 2;
         let ballMiddleX = ball.x + ballR;
         let ballMiddleY = ball.y + ballR;
@@ -28,9 +28,10 @@ export default class Line {
 
         //线段竖直时需要特判
         return (dis <= ballR) &&
-            (Math.abs(Math.cos(this.angle)) < config.NUMBER_OFFSET ?  (ballMiddleY >= this.y1 && ballMiddleY <=  this.y2) : (ballMiddleX >=  Math.min(limitL, limitR) && ballMiddleX <= Math.max(limitL, limitR)
-        ));
+            (Math.abs(Math.cos(this.angle)) < config.NUMBER_OFFSET ? (ballMiddleY >= this.y1 && ballMiddleY <= this.y2) : (ballMiddleX >= Math.min(limitL, limitR) && ballMiddleX <= Math.max(limitL, limitR)
+            ));
     }
+
 
     checkLineCollision(line){
         //线段方向相同时，若要碰撞，y=tanA x + b形式式子中b相等，且绝对值大的x1的绝对值要小于绝对值小的x2的绝对值
@@ -57,26 +58,62 @@ export default class Line {
                 && collisionX - Math.min(Math.max(this.x1, this.x2), Math.max(line.x1, line.x2)) < config.NUMBER_OFFSET;
         }
     }
-    changeV(ball){
+
+    moveOutside(ball){
+        //以下处理穿模问题
         let ballR = ball.size * config.GRID_WIDTH / 2;
         let ballMiddleX = ball.x + ballR;
         let ballMiddleY = ball.y + ballR;
 
         let tanA = Math.tan(this.angle);
+        let cosA = Math.cos(this.angle);
 
+        let dis = Math.abs((tanA * (ballMiddleX - this.x1) + this.y1 - ballMiddleY) * cosA);
+
+        //取圆心到线的垂足
+        let footX;
+        let footY;
+        if(Math.abs(cosA) < config.NUMBER_OFFSET){
+            footX = this.x1;
+            footY = ballMiddleY;
+        } else {
+            if(Math.abs(tanA) < config.NUMBER_OFFSET){
+                footX = ballMiddleX;
+            } else{
+                footX = ((ballMiddleX / tanA) + ballMiddleY - this.y1 + tanA * this.x1) / (tanA + 1 / tanA) ;
+            }
+            footY = (footX - this.x1) * tanA + this.y1;
+        }
+        console.log("foot: " + footX + " " + footY);
+        let newBallMiddleX = (ballMiddleX - footX) * ballR / dis + footX;
+        let newBallMiddleY = (ballMiddleY - footY) * ballR / dis + footY;
+        ball.x = newBallMiddleX - ballR;
+        ball.y = newBallMiddleY - ballR;
+    }
+
+    changeV(ball){
+        this.moveOutside(ball);
         let v = Math.sqrt(ball.vx ** 2 + ball.vy ** 2);
-        // console.log(v);
-        let angleV = ball.vy / ball.vx ? Math.atan(ball.vy / ball.vx) : Math.acos(0);
+        console.log("The v is (" + ball.vx + ", " + ball.vy);
 
+        let angleV = ball.vy / ball.vx ? Math.atan(ball.vy / ball.vx) : Math.acos(0);
+        if(ball.vx < 0) angleV += Math.acos(-1); //对速度方向偏左部分速度角进行修正
+
+        console.log("AngleV is " + angleV);
         // 画图可知 方向angleV的向量 撞在方向为angle的线段上后，出去的向量方向为 2 * angle - angleV
         let newAngelV = 2 * this.angle - angleV;
+        console.log("NewAngleV is " + newAngelV);
+        ball.vx = v * Math.cos(newAngelV);
+        ball.vy = v * Math.sin(newAngelV);
 
-        if(Math.abs(tanA) > config.NUMBER_OFFSET){ // 若对于y, 线段的x唯一, 即线段不为水平的, 那么x偏大速度为正, x偏小速度为负
-            ball.vx = v * Math.abs(Math.cos(newAngelV)) * (ballMiddleX > ((ballMiddleY - this.y1) / tanA + this.x1) ? 1:-1);
-        } //若是线段水平，则vx不变
-        if(Math.abs(Math.cos(this.angle)) > config.NUMBER_OFFSET){ //竖直/非竖直线段也同理
-            ball.vy = v * Math.abs(Math.sin(newAngelV)) * (ballMiddleY > ((ballMiddleX - this.x1) * tanA + this.y1) ? 1:-1);
-        }
+        //已知线段方程为 y = tanA (x - x1) + y1
+        // if(Math.abs(tanA) > config.NUMBER_OFFSET){ // 若对于y, 线段的x唯一, 即线段不为水平的, 那么x偏大速度为正, x偏小速度为负
+        //     ball.vx = v * Math.abs(Math.cos(newAngelV)) * (ballMiddleX > ((ballMiddleY - this.y1) / tanA + this.x1) ? 1:-1);
+        //
+        // } //若是线段水平，则vx不变
+        // if(Math.abs(Math.cos(this.angle)) > config.NUMBER_OFFSET){ //竖直/非竖直线段也同理
+        //     ball.vy = v * Math.abs(Math.sin(newAngelV)) * (ballMiddleY > ((ballMiddleX - this.x1) * tanA + this.y1) ? 1:-1);
+        // }
     }
 
     hit(ball) {

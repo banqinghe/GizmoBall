@@ -12,7 +12,7 @@ export default class Arc {
         this.x2 = x1 + this.r;
         this.y2 = y1 + this.r;
         this.middleX = x1 + this.r * (angle == 1 || angle == 2); //旋转1、2次时圆心与左上角水平距离为r
-        this.middleY = y1 + this.r * (angle > 1);                //旋转2、3次时圆心与左上角竖直距离为r
+        this.middleY = y1 + this.r * (angle == 2 || angle == 3);  //旋转2、3次时圆心与左上角竖直距离为r
     }
 
     checkCollision(ball){
