@@ -29,9 +29,9 @@ export default class Circle {
         //console.log(lineAngle);
         //console.log(Math.tan(lineAngle));
         //考虑到球的运动是离散的，故相切点以被撞圆的边界为准
-        let lineX = this.middleX - this.r * Math.sin(lineAngle);
-        let lineY = this.middleY + this.r * Math.cos(lineAngle);
-        //console.log("Hit position is " + lineX + " " + lineY);
+        let lineX = this.middleX + (ballMiddleX > this.middleX ? 1 : -1) * this.r * Math.abs(Math.sin(lineAngle));
+        let lineY = this.middleY + (ballMiddleY > this.middleY ? 1 : -1) * this.r * Math.abs(Math.cos(lineAngle));
+        //console.log("Hit position is " + lineX + " " + lineY + " lineAngle is " + lineAngle);
         new Line(lineX, lineY, 1, lineAngle).changeV(ball);
     }
 

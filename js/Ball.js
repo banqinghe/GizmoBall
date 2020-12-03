@@ -13,7 +13,6 @@ export default class Ball extends Item{
     this.vx = 0;
     this.vy = 0;
     // this.startTime = 0;
-    //调试
     this.lastTime = new Date().getTime();
 
     this.init();

@@ -73,10 +73,16 @@ export default class Item {
 
   collision(ball){
     this.lineList.forEach(function (line) {
-      if (line.hit(ball)) return;
+      if (line.hit(ball)) {
+        //console.log(ball.x + " " + ball.y);
+        return;
+      }
     });
     this.circleList.forEach(function (circle) {
-      if (circle.hit(ball)) return;
+      if (circle.hit(ball)) {
+        //console.log(ball.x +" " + ball.y);
+        return;
+      }
     });
   }
 

@@ -40,12 +40,12 @@ export default class StraightPipe extends Item {
                 let sign = ball.vy > 0 ? 1 : -1;
                 ball.vy = sign * 0.5;
                 ball.vx = 0;
-                ball.x = this.x + this.width / 2 - ball.radius;
+                //ball.x = this.x + this.width / 2 - ball.radius;
             } else {
                 let sign = ball.vx > 0 ? 1 : -1;
                 ball.vx = sign * 0.5;
                 ball.vy = 0;
-                ball.y = this.y + this.height / 2 - ball.radius;
+                //ball.y = this.y + this.height / 2 - ball.radius;
             }
             ball.element.style.transform = `translate(${ball.x}px, ${ball.y}px)`;
         }
