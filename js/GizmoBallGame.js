@@ -11,12 +11,13 @@ export default class GizmoBallGame {
 
     this.mode = 'design';
 
-    this.dragListener();
-    this.dropListener();
-    this.focusListener();
-    this.fileListener();
-    this.toolListener();
-    this.modeListener();
+    this.dragListener(); // 组件栏监听
+    this.dropListener(); // 放置动作监听
+    this.focusListener(); // focus 选定监听
+    this.fileListener(); // 文件操作监听
+    this.aboutListener(); // 关于弹窗监听 
+    this.toolListener(); // 工具栏监听
+    this.modeListener(); // 模式变更监听
   }
 
   // 为组件栏添加拖动监听
@@ -55,10 +56,12 @@ export default class GizmoBallGame {
     const fileList = document.querySelector('.file-list'); // 文件列表
     const fileContainer = document.querySelector('.file-container'); // 文件列表与文件按钮
 
-    const exportButton = document.querySelector('#export-file'); // 导出文件按钮
-    const importButton = document.querySelector('#import-file'); // 导入文件按钮
+    // const newGameButton = document.querySelector('#new-game'); // 新建游戏按钮
+    // const exportButton = document.querySelector('#export-file'); // 导出文件按钮
+    // const importButton = document.querySelector('#import-file'); // 导入文件按钮
 
-    const fileInput = document.querySelector('#location-input');
+    const fileInput = document.querySelector('#location-input'); // 隐藏的 input:file
+
 
     // 显示文件菜单
     fileButton.addEventListener('click', (e) => {
@@ -85,22 +88,29 @@ export default class GizmoBallGame {
       }
     });
 
-    // 将当前位置信息导出为文件
-    exportButton.addEventListener('click', (e) => {
-      saveLocation(this.gameBoard.getItemsLocation());
+    // 文件操作监听
+    fileList.addEventListener('click', (e) => {
+      switch (e.target.id) {
+        case 'export-file':
+          saveLocation(this.gameBoard.getItemsLocation());
+          break;
+        case 'import-file':
+          loadLocation(fileInput)
+            .then(location => {
+              // 根据 location 设置元素位置（函数空缺）
+              this.gameBoard.setItemsByLocation(location);
+              console.log(location);
+            })
+            .catch(msg => {
+              console.error(msg);
+            });
+          break;
+        case 'new-game':
+          this.gameBoard.end();
+          this.mode = 'design';
+          break;
+      }
       fileList.classList.remove('show');
-    });
-
-    // 导入位置信息
-    importButton.addEventListener('click', (e) => {
-      loadLocation(fileInput)
-        .then(location => {
-          // 根据 location 设置元素位置（函数空缺）
-          console.log(location);
-        })
-        .catch(msg => {
-          console.error(msg);
-        })
     });
   }
 
@@ -161,7 +171,10 @@ export default class GizmoBallGame {
       this.gameBoard.start();
     });
 
+    // 进入设计模式时，清空面板，复原 start() 之前的布局
     designButton.addEventListener('click', e => {
+      this.gameBoard.clearBoard();
+      this.gameBoard.setItemsByLocation(localStorage.getItem('tempLocation'));
       this.mode = 'design';
     });
   }

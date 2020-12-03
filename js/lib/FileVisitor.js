@@ -20,7 +20,11 @@ export function loadLocation(input) {
     input.addEventListener('change', (e) => {
       const reader = new FileReader();
       const file = e.target.files[0];
-  
+      
+      if(!file) {
+        reject('未选择文件');
+      }
+      
       if (/\.gizmo/.test(file.name)) {
         reader.readAsText(file);
       } else {

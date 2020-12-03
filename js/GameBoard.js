@@ -29,6 +29,8 @@ export default class GameBoard {
 
         this.focusElement = null;
 
+        this.animationId = 0;
+
     }
 
     // 接受放置类型和位置，将目标添加进 game board
@@ -170,8 +172,14 @@ export default class GameBoard {
     }
 
     start() {
+        localStorage.setItem('tempLocation', JSON.stringify(this.getItemsLocation));
         this.ballList.forEach(ball => ball.timeStart());
-        this.creeping(this);
+        this.animationId = this.creeping(this);
+    }
+
+    end() {
+        window.cancelAnimationFrame(this.animationId);
+        this.clearBoard();
     }
 
     creeping(self) {
@@ -194,7 +202,7 @@ export default class GameBoard {
             });
             //小球进行一次移动
         }
-        window.requestAnimationFrame(() => self.creeping(self));
+        this.animationId = window.requestAnimationFrame(() => self.creeping(self));
     }
 
     //  对象 size + 1
@@ -320,5 +328,25 @@ export default class GameBoard {
             }
         });
         return location;
+    }
+
+    // 开始新的游戏，清空 board
+    clearBoard() {
+        this.ballList.forEach((item) => {
+            item.deleteElement();
+        });
+        this.itemList.forEach((item) => {
+            if (!(item instanceof Border)) {
+                item.deleteElement();
+            }
+        });
+        this.ballList = [];
+        this.itemList = [new Border()];
+        this.focusElement = null;
+    }
+
+    // 根据位置信息设置布局
+    setItemsByLocation(location) {
+        
     }
 }
