@@ -69,6 +69,7 @@ export default class Triangle extends Item {
         this.element.style.borderBottomWidth = this.height + 'px';
         this.element.style.borderRightWidth = this.width + 'px';
         this.setLineAndCircleList(this.size);
+        console.log(this.lineList);
     }
 
     //旋转，利用队列的先进先出的性质保持 line 和 circle 的顺序
@@ -129,11 +130,15 @@ export default class Triangle extends Item {
                 newLineList.push(new Line(trans_x, line.y1, size, line.angle));
             } else if (line.x1 !== this.x) {
                 //左斜时调整端点 1
-                newLineList.push(new Line(trans_x, line.y1, size, line.angle));
-            } else if (line.y1 !== this.y){
+                newLineList.push(new Line(trans_x, line.y1, size * Math.sqrt(2), line.angle));
+            } else if (line.y1 !== this.y) {
                 //底线
                 newLineList.push(new Line(line.x1, trans_y, size, line.angle));
+            } else if (line.angle === Math.acos(0)/2) {
+                //右斜
+                newLineList.push(new Line(line.x1, line.y1, size * Math.sqrt(2), line.angle));
             } else {
+                //其他初始点不变的情况
                 newLineList.push(new Line(line.x1, line.y1, size, line.angle));
             }
         });

@@ -39,28 +39,36 @@ export default class GameBoard {
             case 'ball':
                 width = config.defaultSize.BALL;
                 if (this.checkCollision(x, y, width, width)) {
-                    this.addBall(new Ball(x, y, config.defaultSize.BALL));
+                    let ball = new Ball(x, y, config.defaultSize.BALL);
+                    this.addBall(ball);
+                    this.setFocusElement(ball.element);
                     this.setBoardStatusTrue(x, y, width, width);
                 }
                 break;
             case 'square':
                 width = config.defaultSize.SQUARE;
                 if (this.checkCollision(x, y, width, width)) {
-                    this.addItem(new Square(x, y, config.defaultSize.SQUARE));
+                    let square = new Square(x, y, config.defaultSize.SQUARE);
+                    this.addItem(square);
+                    this.setFocusElement(square.element);
                     this.setBoardStatusTrue(x, y, width, width);
                 }
                 break;
             case 'triangle':
                 width = config.defaultSize.TRIANGLE;
                 if (this.checkCollision(x, y, width, width)) {
-                    this.addItem(new Triangle(x, y, config.defaultSize.TRIANGLE));
+                    let triangle = new Triangle(x, y, config.defaultSize.TRIANGLE);
+                    this.addItem(triangle);
+                    this.setFocusElement(triangle.element);
                     this.setBoardStatusTrue(x, y, width, width);
                 }
                 break;
             case 'circle':
                 width = config.defaultSize.CIRCLE;
                 if (this.checkCollision(x, y, width, width)) {
-                    this.addItem(new Circle(x, y, config.defaultSize.CIRCLE));
+                    let circle = new Circle(x, y, config.defaultSize.CIRCLE);
+                    this.addItem(circle);
+                    this.setFocusElement(circle.element);
                     this.setBoardStatusTrue(x, y, width, width);
                 }
                 break;
@@ -68,28 +76,36 @@ export default class GameBoard {
                 width = config.defaultSize.BAFFLE;
                 height = Math.ceil(config.BAFFLE_HEIGHT / config.GRID_WIDTH);
                 if (this.checkCollision(x, y, width, height)) {
-                    this.addItem(new Baffle(x, y, config.defaultSize.BAFFLE));
+                    let baffle = new Baffle(x, y, config.defaultSize.BAFFLE);
+                    this.addItem(baffle);
+                    this.setFocusElement(baffle.element);
                     this.setBoardStatusTrue(x, y, width, height);
                 }
                 break;
             case 'hole':
                 width = config.defaultSize.HOLE;
                 if (this.checkCollision(x, y, width, width)) {
-                    this.addItem(new Hole(x, y, config.defaultSize.HOLE));
+                    let hole = new Hole(x, y, config.defaultSize.HOLE);
+                    this.addItem(hole);
+                    this.setFocusElement(hole.element);
                     this.setBoardStatusTrue(x, y, width, width);
                 }
                 break;
             case 'curve':
                 width = config.defaultSize.CURVE;
                 if (this.checkCollision(x, y, width, width)) {
-                    this.addItem(new BentPile(x, y, config.defaultSize.CURVE));
+                    let bentPile = new BentPile(x, y, config.defaultSize.CURVE);
+                    this.addItem(bentPile);
+                    this.setFocusElement(bentPile.element);
                     this.setBoardStatusTrue(x, y, width, width);
                 }
                 break;
             case 'pipe':
                 width = config.defaultSize.PIPE;
                 if (this.checkCollision(x, y, width, width)) {
-                    this.addItem(new StraightPipe(x, y, config.defaultSize.PIPE));
+                    let straightPipe = new StraightPipe(x, y, config.defaultSize.PIPE);
+                    this.addItem(straightPipe);
+                    this.setFocusElement(straightPipe.element);
                     this.setBoardStatusTrue(x, y, width, width);
                 }
                 break;
@@ -165,7 +181,6 @@ export default class GameBoard {
             ball.move();
             //检测 item 和小球的碰撞
             self.itemList.forEach(function (item) {
-                console.log(item.element.classList);
                 if (item.element.classList.contains('hole') && item.isCollided(ball)) {
                     self.ballList.splice(i, 1);
                     i--;

@@ -84,7 +84,7 @@ export default class Line {
             }
             footY = (footX - this.x1) * tanA + this.y1;
         }
-        console.log("foot: " + footX + " " + footY);
+        //console.log("foot: " + footX + " " + footY);
         let newBallMiddleX = (ballMiddleX - footX) * ballR / dis + footX;
         let newBallMiddleY = (ballMiddleY - footY) * ballR / dis + footY;
         ball.x = newBallMiddleX - ballR;
@@ -94,15 +94,15 @@ export default class Line {
     changeV(ball){
         this.moveOutside(ball);
         let v = Math.sqrt(ball.vx ** 2 + ball.vy ** 2);
-        console.log("The v is (" + ball.vx + ", " + ball.vy);
+        //console.log("The v is (" + ball.vx + ", " + ball.vy);
 
         let angleV = ball.vy / ball.vx ? Math.atan(ball.vy / ball.vx) : Math.acos(0);
         if(ball.vx < 0) angleV += Math.acos(-1); //对速度方向偏左部分速度角进行修正
 
-        console.log("AngleV is " + angleV);
+        //console.log("AngleV is " + angleV);
         // 画图可知 方向angleV的向量 撞在方向为angle的线段上后，出去的向量方向为 2 * angle - angleV
         let newAngelV = 2 * this.angle - angleV;
-        console.log("NewAngleV is " + newAngelV);
+        //console.log("NewAngleV is " + newAngelV);
         ball.vx = v * Math.cos(newAngelV);
         ball.vy = v * Math.sin(newAngelV);
 
