@@ -43,8 +43,8 @@ export default class GizmoBallGame {
 
     // 调用 gameboard 的放置函数
     config.GAME_BOARD.addEventListener('drop', e => {
-      const x = Math.floor((e.pageX - 1) / 30);
-      const y = Math.floor((e.pageY - 22) / 30);
+      const x = Math.floor((e.pageX - config.GAME_BOARD.getBoundingClientRect().left) / 30);
+      const y = Math.floor((e.pageY - config.GAME_BOARD.getBoundingClientRect().top) / 30);
       const type = e.dataTransfer.getData('text');
       this.gameBoard.dropItem(type, x, y);
     })
@@ -55,10 +55,6 @@ export default class GizmoBallGame {
     const fileButton = document.querySelector('#file-button'); // 文件按钮
     const fileList = document.querySelector('.file-list'); // 文件列表
     const fileContainer = document.querySelector('.file-container'); // 文件列表与文件按钮
-
-    // const newGameButton = document.querySelector('#new-game'); // 新建游戏按钮
-    // const exportButton = document.querySelector('#export-file'); // 导出文件按钮
-    // const importButton = document.querySelector('#import-file'); // 导入文件按钮
 
     const fileInput = document.querySelector('#location-input'); // 隐藏的 input:file
 
@@ -91,9 +87,11 @@ export default class GizmoBallGame {
     // 文件操作监听
     fileList.addEventListener('click', (e) => {
       switch (e.target.id) {
+        // 导出文件
         case 'export-file':
           saveLocation(this.gameBoard.getItemsLocation());
           break;
+        // 导入文件
         case 'import-file':
           loadLocation(fileInput)
             .then(location => {
@@ -105,6 +103,7 @@ export default class GizmoBallGame {
               console.error(msg);
             });
           break;
+        // 新游戏
         case 'new-game':
           this.gameBoard.end();
           this.mode = 'design';

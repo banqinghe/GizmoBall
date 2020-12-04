@@ -172,7 +172,7 @@ export default class GameBoard {
     }
 
     start() {
-        localStorage.setItem('tempLocation', JSON.stringify(this.getItemsLocation));
+        localStorage.setItem('tempLocation', JSON.stringify(this.getItemsLocation()));
         this.ballList.forEach(ball => ball.timeStart());
         this.animationId = this.creeping(this);
     }
