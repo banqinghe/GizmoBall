@@ -43,10 +43,13 @@ export default class GizmoBallGame {
 
     // 调用 gameboard 的放置函数
     config.GAME_BOARD.addEventListener('drop', e => {
-      const x = Math.floor((e.pageX - config.GAME_BOARD.getBoundingClientRect().left) / 30);
-      const y = Math.floor((e.pageY - config.GAME_BOARD.getBoundingClientRect().top) / 30);
-      const type = e.dataTransfer.getData('text');
-      this.gameBoard.dropItem(type, x, y);
+      // 设计模式下允许放置
+      if (this.mode === 'design') {
+        const x = Math.floor((e.pageX - config.GAME_BOARD.getBoundingClientRect().left) / 30);
+        const y = Math.floor((e.pageY - config.GAME_BOARD.getBoundingClientRect().top) / 30);
+        const type = e.dataTransfer.getData('text');
+        this.gameBoard.dropItem(type, x, y);
+      }
     })
   }
 
@@ -89,15 +92,16 @@ export default class GizmoBallGame {
       switch (e.target.id) {
         // 导出文件
         case 'export-file':
-          saveLocation(this.gameBoard.getItemsLocation());
+          saveLocation(JSON.parse(localStorage.getItem('tempLocation')));
           break;
         // 导入文件
         case 'import-file':
           loadLocation(fileInput)
             .then(location => {
-              // 根据 location 设置元素位置（函数空缺）
+              this.gameBoard.end();
+              // 根据 location 设置元素位置
               this.gameBoard.setItemsByLocation(location);
-              console.log(location);
+              this.mode = 'design';
             })
             .catch(msg => {
               console.error(msg);
@@ -165,23 +169,34 @@ export default class GizmoBallGame {
     const designButton = document.querySelector('#design');
     const playButton = document.querySelector('#play');
 
+    // 游玩模式，小球开始运动
     playButton.addEventListener('click', e => {
-      this.mode = 'play';
-      this.gameBoard.start();
+      if (this.mode === 'design') {
+        this.mode = 'play';
+        if (this.gameBoard.focusElement) {
+          this.gameBoard.focusElement.classList.remove('focus');
+          this.gameBoard.focusElement = null;
+        }
+        this.gameBoard.start();
+      }
     });
 
-    // 进入设计模式时，清空面板，复原 start() 之前的布局
+    // 设计模式，清空面板，复原 start() 之前的布局
     designButton.addEventListener('click', e => {
-      this.gameBoard.clearBoard();
-      this.gameBoard.setItemsByLocation(localStorage.getItem('tempLocation'));
-      this.mode = 'design';
+      if (this.mode === 'play') {
+        this.gameBoard.end();
+        this.gameBoard.setItemsByLocation(JSON.parse(localStorage.getItem('tempLocation')));
+        this.mode = 'design';
+      }
     });
   }
 
   // 检测 focus 元素
   focusListener() {
     config.GAME_BOARD.addEventListener('click', e => {
-      this.gameBoard.setFocusElement(e.target);
+      if (this.mode === 'design') {
+        this.gameBoard.setFocusElement(e.target);
+      }
     });
   }
 }

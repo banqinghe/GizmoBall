@@ -118,7 +118,7 @@ export default class BentPile extends Item {
         temp = this.arcQueue.shift();
         this.arcQueue.push(temp);
         this.arcList.push(this.arcQueue[0]);
-        console.log(this.arcList);;
+        // console.log(this.arcList);;
     }
 
     //放大或缩小后更新存有线段的 List 中

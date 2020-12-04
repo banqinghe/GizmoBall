@@ -151,16 +151,16 @@ export default class GameBoard {
     // 选中 focus 元素
     setFocusElement(target) {
         // 清除上一个 focus 元素的 outline 样式
-      if (this.focusElement) {
-        this.focusElement.classList.remove('focus');
-      }
-      // 选定新的 focus 元素
-      if ((!target.classList.contains('border')) && target !== config.GAME_BOARD) {
-        this.focusElement = target;
-        this.focusElement.classList.add('focus');
-      } else {
-        this.focusElement = null;
-      }
+        if (this.focusElement) {
+            this.focusElement.classList.remove('focus');
+        }
+        // 选定新的 focus 元素
+        if ((!target.classList.contains('border')) && target !== config.GAME_BOARD) {
+            this.focusElement = target;
+            this.focusElement.classList.add('focus');
+        } else {
+            this.focusElement = null;
+        }
     }
 
     addBall(ball) {
@@ -343,10 +343,55 @@ export default class GameBoard {
         this.ballList = [];
         this.itemList = [new Border()];
         this.focusElement = null;
+        this.setBoardStatusFalse(0, 0, 20, 20);
+    }
+
+    // 根据信息数组创建 Item 对象
+    // info [type, x, y, width, height, angle]
+    setItemByInfo(info) {
+        let result;
+        switch (info[0]) {
+            case 'Ball':
+                result = new Ball(info[1], info[2], info[3]);
+                break;
+            case 'Square':
+                result = new Square(info[1], info[2], info[3]);
+                break;
+            case 'Hole':
+                result = new Hole(info[1], info[2], info[3]);
+                break;
+            case 'Triangle':
+                result = new Triangle(info[1], info[2], info[3]);
+                break;
+            case 'Circle':
+                result = new Circle(info[1], info[2], info[3]);
+                break;
+            case 'StraightPipe':
+                result = new StraightPipe(info[1], info[2], info[3]);
+                break;
+            case 'BentPile':
+                result = new BentPile(info[1], info[2], info[3]);
+                break;
+            case 'Baffle':
+                result = new Baffle(info[1], info[2], info[3], info[4]);
+                break;
+        }
+        for (let i = 0; i < info[5]; i++) {
+            result.rotate();
+        }
+        this.setBoardStatusTrue(info[1], info[2], info[3], info[4]);
+        return result;
     }
 
     // 根据位置信息设置布局
     setItemsByLocation(location) {
-        
+        location.forEach((info) => {
+            if (info[0] === 'Ball') {
+                this.ballList.push(this.setItemByInfo(info));
+            } else {
+                this.itemList.push(this.setItemByInfo(info));
+            }
+        });
+        localStorage.setItem('tempLocation', JSON.stringify(location));
     }
 }
