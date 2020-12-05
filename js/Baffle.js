@@ -4,8 +4,8 @@ import Line from "./collision/Line.js";
 import Circle from "./collision/Circle.js";
 
 export default class Baffle extends Item {
-  constructor(coorX, coorY, size) {
-    super(coorX, coorY, size, 10);
+  constructor(coorX, coorY, size, height) {
+    super(coorX, coorY, size, height);
     this.init();
   }
 

@@ -5,6 +5,7 @@ import Line from "./collision/Line.js";
 export default class Border extends Item{
     constructor() {
         super(0, 0, 20);
+        this.element.draggable = 'false';
         this.init();
     }
 

@@ -6,8 +6,9 @@ import config from "./config.js";
 import Border from "./Border.js";
 import Circle from "./Circle.js";
 import Hole from "./Hole.js";
-import BentPile from "./BentPipe.js";
+import BentPipe from "./BentPipe.js";
 import StraightPipe from "./StraightPipe.js";
+import ItemGenerator from './ItemGenerator.js';
 
 export default class GameBoard {
     constructor() {
@@ -29,89 +30,36 @@ export default class GameBoard {
 
         this.focusElement = null;
 
-        this.animationId = 0;
+        this.animationId = -1;
 
     }
 
     // 接受放置类型和位置，将目标添加进 game board
-    dropItem(type, x, y) {
-        let width = 0;
-        let height = 0;
-        switch (type) {
-            case 'ball':
-                width = config.defaultSize.BALL;
-                if (this.checkCollision(x, y, width, width)) {
-                    let ball = new Ball(x, y, config.defaultSize.BALL);
-                    this.addBall(ball);
-                    this.setFocusElement(ball.element);
-                    this.setBoardStatusTrue(x, y, width, width);
-                }
-                break;
-            case 'square':
-                width = config.defaultSize.SQUARE;
-                if (this.checkCollision(x, y, width, width)) {
-                    let square = new Square(x, y, config.defaultSize.SQUARE);
-                    this.addItem(square);
-                    this.setFocusElement(square.element);
-                    this.setBoardStatusTrue(x, y, width, width);
-                }
-                break;
-            case 'triangle':
-                width = config.defaultSize.TRIANGLE;
-                if (this.checkCollision(x, y, width, width)) {
-                    let triangle = new Triangle(x, y, config.defaultSize.TRIANGLE);
-                    this.addItem(triangle);
-                    this.setFocusElement(triangle.element);
-                    this.setBoardStatusTrue(x, y, width, width);
-                }
-                break;
-            case 'circle':
-                width = config.defaultSize.CIRCLE;
-                if (this.checkCollision(x, y, width, width)) {
-                    let circle = new Circle(x, y, config.defaultSize.CIRCLE);
-                    this.addItem(circle);
-                    this.setFocusElement(circle.element);
-                    this.setBoardStatusTrue(x, y, width, width);
-                }
-                break;
-            case 'baffle':
-                width = config.defaultSize.BAFFLE;
-                height = Math.ceil(config.BAFFLE_HEIGHT / config.GRID_WIDTH);
-                if (this.checkCollision(x, y, width, height)) {
-                    let baffle = new Baffle(x, y, config.defaultSize.BAFFLE);
-                    this.addItem(baffle);
-                    this.setFocusElement(baffle.element);
-                    this.setBoardStatusTrue(x, y, width, height);
-                }
-                break;
-            case 'hole':
-                width = config.defaultSize.HOLE;
-                if (this.checkCollision(x, y, width, width)) {
-                    let hole = new Hole(x, y, config.defaultSize.HOLE);
-                    this.addItem(hole);
-                    this.setFocusElement(hole.element);
-                    this.setBoardStatusTrue(x, y, width, width);
-                }
-                break;
-            case 'curve':
-                width = config.defaultSize.CURVE;
-                if (this.checkCollision(x, y, width, width)) {
-                    let bentPile = new BentPile(x, y, config.defaultSize.CURVE);
-                    this.addItem(bentPile);
-                    this.setFocusElement(bentPile.element);
-                    this.setBoardStatusTrue(x, y, width, width);
-                }
-                break;
-            case 'pipe':
-                width = config.defaultSize.PIPE;
-                if (this.checkCollision(x, y, width, width)) {
-                    let straightPipe = new StraightPipe(x, y, config.defaultSize.PIPE);
-                    this.addItem(straightPipe);
-                    this.setFocusElement(straightPipe.element);
-                    this.setBoardStatusTrue(x, y, width, width);
-                }
-                break;
+    // dropItem(type, x, y, width, height) {
+    dropItem(info) {
+        // 这里的 type 是 CSS 类名
+
+        // console.log('when drop', info);
+
+        // 如果未指定宽高，则使用默认值
+        if (info[3] === -1) {
+            info[3] = ItemGenerator.styleToDefaultSize[info[0]];
+            info[4] = ItemGenerator.styleToDefaultHeight[info[0]];
         }
+        // info = [type, x, y, ItemGenerator.styleToDefaultSize[type], ItemGenerator.styleToDefaultHeight[type], 0];
+        // 若不会造成重叠，放置对象，否则静默处理
+        if (this.checkCollision(info[1], info[2], info[3], info[4])) {
+            const item = ItemGenerator.createItemByCSSName(info, this);
+            if (info[0] === 'ball') {
+                this.ballList.push(item);
+            } else {
+                this.itemList.push(item);
+            }
+            this.setFocusElement(item.element);
+            
+            return item;
+        }
+        return null;
     }
 
     /*以格子作为单位长度*/
@@ -151,6 +99,11 @@ export default class GameBoard {
     // 选中 focus 元素
     setFocusElement(target) {
         // 清除上一个 focus 元素的 outline 样式
+        // this.itemList.forEach(item => {
+        //     if (item.element.classList.contains('focus')) {
+        //         item.element.classList.remove('focus');
+        //     }
+        // })
         if (this.focusElement) {
             this.focusElement.classList.remove('focus');
         }
@@ -284,8 +237,10 @@ export default class GameBoard {
         }
         this.setBoardStatusFalse(item.x / config.GRID_WIDTH, item.y / config.GRID_WIDTH,
             item.width / config.GRID_WIDTH, item.height / config.GRID_WIDTH);
-        // 清除 focus 元素
-        this.focusElement = null;
+        // 若清除的元素为 drop 前的旧元素则不必修改 focus 元素
+        if (targetElement === this.focusElement) {
+            this.focusElement = null;
+        }
     }
 
     // 工具函数，用于获取 list 中的指定项
@@ -295,6 +250,21 @@ export default class GameBoard {
                 return list[i];
             }
         }
+    }
+
+    // 通过坐标获取元素
+    getElementByCoord(x, y) {
+        for (const item of this.itemList) {
+            if (item.x / config.GRID_WIDTH === x && item.y / config.GRID_WIDTH === y) {
+                return item.element;
+            }
+        }
+        for (const item of this.ballList) {
+            if (item.x / config.GRID_WIDTH === x && item.y / config.GRID_WIDTH === y) {
+                return item.element;
+            }
+        }
+        return null;
     }
 
     // 工具函数，用于删除 list 中的指定项
@@ -341,57 +311,24 @@ export default class GameBoard {
             }
         });
         this.ballList = [];
-        this.itemList = [new Border()];
+        this.itemList = this.itemList.filter(e => (e instanceof Border));
         this.focusElement = null;
         this.setBoardStatusFalse(0, 0, 20, 20);
     }
 
-    // 根据信息数组创建 Item 对象
-    // info [type, x, y, width, height, angle]
-    setItemByInfo(info) {
-        let result;
-        switch (info[0]) {
-            case 'Ball':
-                result = new Ball(info[1], info[2], info[3]);
-                break;
-            case 'Square':
-                result = new Square(info[1], info[2], info[3]);
-                break;
-            case 'Hole':
-                result = new Hole(info[1], info[2], info[3]);
-                break;
-            case 'Triangle':
-                result = new Triangle(info[1], info[2], info[3]);
-                break;
-            case 'Circle':
-                result = new Circle(info[1], info[2], info[3]);
-                break;
-            case 'StraightPipe':
-                result = new StraightPipe(info[1], info[2], info[3]);
-                break;
-            case 'BentPile':
-                result = new BentPile(info[1], info[2], info[3]);
-                break;
-            case 'Baffle':
-                result = new Baffle(info[1], info[2], info[3], info[4]);
-                break;
-        }
-        for (let i = 0; i < info[5]; i++) {
-            result.rotate();
-        }
-        this.setBoardStatusTrue(info[1], info[2], info[3], info[4]);
-        return result;
-    }
-
     // 根据位置信息设置布局
     setItemsByLocation(location) {
+        const items = [];
         location.forEach((info) => {
+            const item = ItemGenerator.createItem(info, this)
             if (info[0] === 'Ball') {
-                this.ballList.push(this.setItemByInfo(info));
+                this.ballList.push(item);
             } else {
-                this.itemList.push(this.setItemByInfo(info));
+                this.itemList.push(item);
             }
+            items.push(item);
         });
         localStorage.setItem('tempLocation', JSON.stringify(location));
+        return items;
     }
 }

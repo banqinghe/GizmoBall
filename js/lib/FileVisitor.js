@@ -23,7 +23,7 @@ export function loadLocation(input) {
     input.addEventListener('change', (e) => {
       const reader = new FileReader();
       const file = e.target.files[0];
-      
+      // console.log('file: ', file);
       if(!file) {
         reject('未选择文件');
       }
@@ -41,6 +41,7 @@ export function loadLocation(input) {
   
       reader.onload = () => {
         resolve(JSON.parse(reader.result));
+        input.value = null;
       }
     });
   });

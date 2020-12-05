@@ -3,7 +3,7 @@ import config from "./config.js";
 export default class Item {
   constructor(coordX, coordY, size, height) {
     // 坐标值
-    this.x = coordX *  config.GRID_WIDTH;
+    this.x = coordX * config.GRID_WIDTH;
     this.y = coordY * config.GRID_WIDTH;
     this.size = size;
     this.angle = 0;
@@ -24,11 +24,14 @@ export default class Item {
     if (height === undefined) {
       this.height = size * config.GRID_WIDTH;
     } else {
-      this.height = height;
+      this.height = height * config.GRID_WIDTH;
     }
 
     this.element.style.height = this.height + 'px';
     this.element.style.width = this.width + 'px';
+
+    // 将 Item 放置在 game board 上后依然可以拖动
+    this.element.draggable = 'true';
   }
 
 
@@ -47,7 +50,7 @@ export default class Item {
     if (this.size === 1) {
       return;
     }
-    this.size = this.size - 1 ;
+    this.size = this.size - 1;
     this.width = this.size * config.GRID_WIDTH;
     this.height = this.size * config.GRID_WIDTH;
 
@@ -71,7 +74,7 @@ export default class Item {
     this.angle = (this.angle + 1) % 4;
   }
 
-  collision(ball){
+  collision(ball) {
     this.lineList.forEach(function (line) {
       if (line.hit(ball)) {
         //console.log(ball.x + " " + ball.y);

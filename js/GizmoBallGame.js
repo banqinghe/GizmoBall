@@ -24,10 +24,38 @@ export default class GizmoBallGame {
   dragListener() {
     // 传递拖动item的类型
     document.querySelectorAll('.item').forEach(element => {
-      element.addEventListener('dragstart', e => {
-        e.dataTransfer.setData('text', element.className.split(' ')[0]);
-      })
-    })
+      element.addEventListener('dragstart', (e) => this.handleDragStart(e, element));
+    });
+  }
+
+  // 复用 dragstart 处理方法
+  handleDragStart(e, element, item) {
+    element.className.split(' ').forEach(name => {
+      if (config.CSS_NAME.includes(name)) {
+        let dragInfo = {
+          name: name,
+          x: -1,
+          y: -1,
+          width: -1, // 宽度 格子数
+          height: -1, // 高度 格子数
+          angle: -1
+        }
+        // 预备删除信息
+        if (item !== undefined) {
+          dragInfo.x = item.x / config.GRID_WIDTH,
+            dragInfo.y = item.y / config.GRID_WIDTH,
+            dragInfo.width = item.width / config.GRID_WIDTH;
+          dragInfo.height = item.height / config.GRID_WIDTH;
+          dragInfo.angle = item.angle;
+          // console.log('when dragstart', dragInfo, item);
+        }
+
+        // CSS 类名
+        e.dataTransfer.setData('text', JSON.stringify(dragInfo));
+        // 鼠标相对位置
+        e.dataTransfer.setDragImage(element, config.GRID_WIDTH / 2, config.GRID_WIDTH / 2);
+      }
+    });
   }
 
   // game board 添加放置事件监听
@@ -47,8 +75,27 @@ export default class GizmoBallGame {
       if (this.mode === 'design') {
         const x = Math.floor((e.pageX - config.GAME_BOARD.getBoundingClientRect().left) / 30);
         const y = Math.floor((e.pageY - config.GAME_BOARD.getBoundingClientRect().top) / 30);
-        const type = e.dataTransfer.getData('text');
-        this.gameBoard.dropItem(type, x, y);
+
+        // const type = e.dataTransfer.getData('text');
+        const dragInfo = JSON.parse(e.dataTransfer.getData('text'));
+        // console.log(dragInfo);
+        const type = dragInfo.name;
+
+        const info = [type, x, y, dragInfo.width, dragInfo.height, dragInfo.angle];
+
+        const item = this.gameBoard.dropItem(info);
+        // console.log(item.element);
+
+        // 如果放置成功
+        if (item !== null) {
+          // 对放置对象进行拖动监听，使 active 的 Item 依然可以被拖动
+          item.element.addEventListener('dragstart', (e) => this.handleDragStart(e, item.element, item));
+
+          // 如果需要删除原有元素
+          // console.log(dragInfo.x, dragInfo.y);
+          // console.log(this.gameBoard.getElementByCoord(dragInfo.x, dragInfo.y));
+          this.gameBoard.deleteItem(this.gameBoard.getElementByCoord(dragInfo.x, dragInfo.y));
+        }
       }
     })
   }
@@ -59,7 +106,7 @@ export default class GizmoBallGame {
     const fileList = document.querySelector('.file-list'); // 文件列表
     const fileContainer = document.querySelector('.file-container'); // 文件列表与文件按钮
 
-    const fileInput = document.querySelector('#location-input'); // 隐藏的 input:file
+    let fileInput = document.querySelector('#location-input'); // 隐藏的 input:file
 
 
     // 显示文件菜单
@@ -94,20 +141,29 @@ export default class GizmoBallGame {
         case 'export-file':
           saveLocation(JSON.parse(localStorage.getItem('tempLocation')));
           break;
-        // 导入文件
+          // 导入文件
         case 'import-file':
           loadLocation(fileInput)
             .then(location => {
+              // console.log('read result: ' + location);
               this.gameBoard.end();
               // 根据 location 设置元素位置
-              this.gameBoard.setItemsByLocation(location);
+              const items = this.gameBoard.setItemsByLocation(location);
+              items.forEach(item => {
+                item.element.addEventListener('dragstart', (e) => this.handleDragStart(e, item.element, item));
+              });
               this.mode = 'design';
+
+              // 刷新Input元素，旨在取消其中的监听事件
+              const newInput = fileInput.cloneNode(true);
+              fileInput.parentNode.replaceChild(newInput, fileInput);
+              fileInput = newInput;
             })
             .catch(msg => {
               console.error(msg);
             });
           break;
-        // 新游戏
+          // 新游戏
         case 'new-game':
           this.gameBoard.end();
           this.mode = 'design';
@@ -185,7 +241,10 @@ export default class GizmoBallGame {
     designButton.addEventListener('click', e => {
       if (this.mode === 'play') {
         this.gameBoard.end();
-        this.gameBoard.setItemsByLocation(JSON.parse(localStorage.getItem('tempLocation')));
+        const items = this.gameBoard.setItemsByLocation(JSON.parse(localStorage.getItem('tempLocation')));
+        items.forEach(item => {
+          item.element.addEventListener('dragstart', (e) => this.handleDragStart(e, item.element, item));
+        });
         this.mode = 'design';
       }
     });

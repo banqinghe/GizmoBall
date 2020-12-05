@@ -4,7 +4,7 @@ import Circle from "./collision/Circle.js";
 import Arc from "./collision/Arc.js";
 import config from "./config.js";
 
-export default class BentPile extends Item {
+export default class BentPipe extends Item {
     constructor(coordX, coordY, size) {
         super(coordX, coordY, size);
         this.init();
